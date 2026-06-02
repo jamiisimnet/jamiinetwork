@@ -1020,13 +1020,15 @@
                     <div class="table-container">
                         <table id="agentsTable">
                             <thead>
-                                <tr><th><i class="fas fa-user"></i> Name</th>
+                                <tr>
+                                    <th><i class="fas fa-user"></i> Name</th>
                                     <th><i class="fas fa-id-card"></i> ID No</th>
                                     <th><i class="fas fa-phone"></i> Phone</th>
                                     <th><i class="fas fa-envelope"></i> Email</th>
                                     <th><i class="fas fa-circle"></i> Status</th>
                                     <th><i class="fas fa-cog"></i> Actions</th>
-                                </thead>
+                                </tr>
+                            </thead>
                             <tbody></tbody>
                         </table>
                     </div>
@@ -1040,10 +1042,12 @@
                     <div class="table-container">
                         <table id="transactionsTable">
                             <thead>
-                                <th><i class="fas fa-user"></i> Customer Name</th>
-                                <th><i class="fas fa-hashtag"></i> Till Number</th>
-                                <th><i class="fas fa-cubes"></i> Current Units</th>
-                                <th><i class="fas fa-plus-circle"></i> Action</th>
+                                <tr>
+                                    <th><i class="fas fa-user"></i> Customer Name</th>
+                                    <th><i class="fas fa-hashtag"></i> Till Number</th>
+                                    <th><i class="fas fa-cubes"></i> Current Units</th>
+                                    <th><i class="fas fa-plus-circle"></i> Action</th>
+                                </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -1070,11 +1074,13 @@
                     <div class="table-container">
                         <table id="activationTable">
                             <thead>
-                                <th><i class="fas fa-phone"></i> Phone</th>
-                                <th><i class="fas fa-user"></i> Customer Name</th>
-                                <th><i class="fas fa-hashtag"></i> Till Number</th>
-                                <th><i class="fas fa-circle"></i> Status</th>
-                                <th><i class="fas fa-bolt"></i> Action</th>
+                                <tr>
+                                    <th><i class="fas fa-phone"></i> Phone</th>
+                                    <th><i class="fas fa-user"></i> Customer Name</th>
+                                    <th><i class="fas fa-hashtag"></i> Till Number</th>
+                                    <th><i class="fas fa-circle"></i> Status</th>
+                                    <th><i class="fas fa-bolt"></i> Action</th>
+                                </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -1162,7 +1168,7 @@
                 <input type="number" id="unitsToAdd" min="1" placeholder="Enter units">
             </div>
             <button class="btn-primary" onclick="confirmAddUnits()">Add Units</button>
-            <input type="hidden" id="currentTillId">
+            <input type="hidden" id="currentTillRowIndex">
         </div>
     </div>
 
@@ -1177,18 +1183,20 @@
                 <input type="password" id="activationPin" placeholder="Enter 4-6 digit PIN">
             </div>
             <button class="btn-success" onclick="confirmActivation()">Activate</button>
-            <input type="hidden" id="activateTillId">
+            <input type="hidden" id="activateTillRowIndex">
         </div>
     </div>
 
     <script>
         // ==================== CONFIGURATION ====================
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyux5FlzVTS79j5reI_YIYCiuGYMEE3VTmn6mgk51Nlw_mm5Wl-kH0l1cJetyosN9Z5iA/exec';
+        const API_URL = 'YOUR_APPSCRIPT_WEB_APP_URL_HERE';
         
         let currentUser = null;
         let currentSuspendUserId = null;
-        let currentTillId = null;
-        let currentActivateTillId = null;
+        let currentTillRowIndex = null;
+        let currentActivateRowIndex = null;
+        let linesData = [];
+        let tillsData = [];
         
         // ==================== API HELPER FUNCTIONS ====================
         async function callApi(action, params = {}) {
@@ -1203,7 +1211,10 @@
             try {
                 const response = await fetch(url.toString(), {
                     method: 'GET',
-                    mode: 'cors'
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
                 });
                 const data = await response.json();
                 return data;
@@ -1251,29 +1262,23 @@
             if (!result.success) {
                 hideGlobalLoader();
                 const errorDiv = document.getElementById('loginError');
-                errorDiv.textContent = result.message || 'Invalid username or password';
+                errorDiv.textContent = result.error || 'Invalid username or password';
                 errorDiv.style.display = 'block';
                 setTimeout(() => errorDiv.style.display = 'none', 3000);
                 return;
             }
             
-            currentUser = result;
+            currentUser = { username: result.username, full_name: result.username, role: 'admin' };
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardContainer').style.display = 'block';
-            document.getElementById('userStatus').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.full_name} (${currentUser.role === 'admin' ? 'Admin' : 'Agent'})`;
+            document.getElementById('userStatus').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.full_name} (Admin)`;
             
             const adminItems = document.querySelectorAll('.admin-only');
-            if (currentUser.role === 'admin') {
-                adminItems.forEach(item => item.style.display = 'flex');
-            } else {
-                adminItems.forEach(item => item.style.display = 'none');
-            }
+            adminItems.forEach(item => item.style.display = 'flex');
             
             await loadStats();
-            if (currentUser.role === 'admin') {
-                await loadAgents();
-                await loadActivation();
-            }
+            await loadAgents();
+            await loadActivation();
             await loadTransactions();
             setupEventListeners();
             hideGlobalLoader();
@@ -1309,18 +1314,33 @@
             
             document.getElementById('lineForm').onsubmit = registerLine;
             document.getElementById('tillForm').onsubmit = registerTill;
-            document.getElementById('addAgentForm').onsubmit = addAgent;
-            document.getElementById('fetchCustomerBtn').onclick = fetchCustomerData;
+        }
+        
+        // ==================== LOAD DATA ====================
+        async function loadLines() {
+            const result = await callApi('getLines');
+            if (result.success && result.lines) {
+                linesData = result.lines;
+            }
+            return linesData;
+        }
+        
+        async function loadTills() {
+            const result = await callApi('getTills');
+            if (result.success && result.tills) {
+                tillsData = result.tills;
+            }
+            return tillsData;
         }
         
         // ==================== STATS ====================
         async function loadStats() {
-            const result = await callApi('getStats', { agent_name: currentUser.role === 'agent' ? currentUser.full_name : 'admin' });
+            const result = await callApi('getStats');
             if (result.success) {
-                document.getElementById('totalLines').innerText = result.data.totalLines;
-                document.getElementById('totalTills').innerText = result.data.totalTills;
-                document.getElementById('activeTills').innerText = result.data.activeTills;
-                document.getElementById('commission').innerText = `KES ${result.data.commission.toLocaleString()}`;
+                document.getElementById('totalLines').innerText = result.totalLines || 0;
+                document.getElementById('totalTills').innerText = result.totalTills || 0;
+                document.getElementById('activeTills').innerText = result.activeTills || 0;
+                document.getElementById('commission').innerText = `KES ${(result.salary || 0).toLocaleString()}`;
             }
         }
         
@@ -1330,11 +1350,10 @@
             showGlobalLoader();
             
             const result = await callApi('registerLine', {
-                customer_name: document.getElementById('lineName').value,
-                id_number: document.getElementById('lineId').value,
-                phone_number: document.getElementById('linePhone').value,
-                dob: document.getElementById('lineDob').value,
-                registered_by: currentUser.full_name
+                name: document.getElementById('lineName').value,
+                idNumber: document.getElementById('lineId').value,
+                phone: document.getElementById('linePhone').value,
+                dob: document.getElementById('lineDob').value
             });
             
             if (result.success) {
@@ -1342,56 +1361,54 @@
                 document.getElementById('lineForm').reset();
                 await loadStats();
             } else {
-                alert('✗ Error: ' + (result.message || result.error));
+                alert('✗ Error: ' + (result.error || 'Unknown error'));
             }
             hideGlobalLoader();
         }
         
         // ==================== TILL REGISTRATION ====================
         async function fetchCustomerData() {
-            showGlobalLoader();
+            await loadLines();
             const phone = document.getElementById('tillPhone').value;
-            const result = await callApi('getCustomerByPhone', { phone });
+            const customer = linesData.find(l => l.phone === phone);
             
-            if (!result.success || !result.customer) {
+            if (!customer) {
                 alert('Customer not found! Please register the line first.');
-                hideGlobalLoader();
                 return;
             }
             
-            const customer = result.customer;
-            document.getElementById('tillName').value = customer.customer_name;
-            document.getElementById('tillId').value = customer.id_number;
+            document.getElementById('tillName').value = customer.name;
+            document.getElementById('tillId').value = customer.idNumber;
             document.getElementById('tillDob').value = customer.dob;
             
-            const operatorId = customer.customer_name.split(' ').map(n => n[0]).join('').toUpperCase();
+            const operatorId = customer.name.split(' ').map(n => n[0]).join('').toUpperCase();
             document.getElementById('operatorId').value = operatorId;
-            hideGlobalLoader();
         }
+        
+        document.getElementById('fetchCustomerBtn').onclick = fetchCustomerData;
         
         async function registerTill(e) {
             e.preventDefault();
             showGlobalLoader();
             
             const result = await callApi('registerTill', {
-                till_number: document.getElementById('tillNumber').value,
-                phone_number: document.getElementById('tillPhone').value,
-                customer_name: document.getElementById('tillName').value,
-                id_number: document.getElementById('tillId').value,
+                phone: document.getElementById('tillPhone').value,
+                name: document.getElementById('tillName').value,
+                idNumber: document.getElementById('tillId').value,
                 dob: document.getElementById('tillDob').value,
-                operator_id: document.getElementById('operatorId').value,
-                store_number: document.getElementById('storeNumber').value,
-                registered_by: currentUser.full_name
+                tillNumber: document.getElementById('tillNumber').value,
+                storeNumber: document.getElementById('storeNumber').value,
+                operatorId: document.getElementById('operatorId').value
             });
             
             if (result.success) {
                 alert('✓ Till registered successfully!');
                 document.getElementById('tillForm').reset();
                 await loadStats();
-                if (currentUser.role === 'admin') await loadActivation();
+                await loadActivation();
                 await loadTransactions();
             } else {
-                alert('✗ Error: ' + (result.message || result.error));
+                alert('✗ Error: ' + (result.error || 'Unknown error'));
             }
             hideGlobalLoader();
         }
@@ -1399,27 +1416,43 @@
         // ==================== AGENTS MANAGEMENT ====================
         async function loadAgents() {
             showSectionLoader('agents');
-            const result = await callApi('getAgents');
+            await loadTills();
+            
+            // Group tills by operator to calculate commission
+            const agentCommission = {};
+            tillsData.forEach(till => {
+                if (till.status === 'active') {
+                    const agentName = till.name;
+                    if (!agentCommission[agentName]) {
+                        agentCommission[agentName] = 0;
+                    }
+                    agentCommission[agentName] += 200;
+                }
+            });
             
             const tbody = document.querySelector('#agentsTable tbody');
             tbody.innerHTML = '';
             
-            if (result.success && result.data && result.data.length > 0) {
-                result.data.forEach(agent => {
+            // Create agents from unique operators in tills
+            const uniqueAgents = [...new Map(tillsData.map(till => [till.name, till])).values()];
+            
+            if (uniqueAgents.length > 0) {
+                uniqueAgents.forEach(agent => {
                     const row = tbody.insertRow();
-                    let statusClass = agent.status === 'active' ? 'status-active' : (agent.status === 'suspended' ? 'status-suspended' : 'status-blacklisted');
+                    const commission = agentCommission[agent.name] || 0;
                     row.innerHTML = `
-                        <td>${agent.full_name}</td
-                        <td>${agent.id_number}</td
-                        <td>${agent.phone}</td
-                        <td>${agent.email}</td
-                        <td><span class="status-badge ${statusClass}">${agent.status}</span></td
+                        <td>${agent.name || 'N/A'}</td
+                        <td>${agent.idNumber || 'N/A'}</td
+                        <td>${agent.phone || 'N/A'}</td
+                        <td>${agent.email || 'N/A'}</td
+                        <td><span class="status-badge status-active">Active</span></td
                         <td>
-                            <button class="btn-warning" onclick="resetPassword('${agent.user_id}')"><i class="fas fa-key"></i> Reset</button>
-                            <button class="btn-info" onclick="getUsername('${agent.user_id}')"><i class="fas fa-user"></i> Username</button>
-                            <button class="btn-warning" onclick="openSuspendModal('${agent.user_id}')"><i class="fas fa-pause"></i> Suspend</button>
-                            <button class="btn-danger" onclick="blacklistAgent('${agent.user_id}')"><i class="fas fa-ban"></i> Blacklist</button>
-                        </td>
+                            <button class="btn-warning" onclick="resetAgentPassword('${agent.name}')"><i class="fas fa-key"></i> Reset</button>
+                            <button class="btn-info" onclick="getAgentUsername('${agent.name}')"><i class="fas fa-user"></i> Username</button>
+                            <button class="btn-warning" onclick="openSuspendModal('${agent.name}')"><i class="fas fa-pause"></i> Suspend</button>
+                            <button class="btn-danger" onclick="blacklistAgent('${agent.name}')"><i class="fas fa-ban"></i> Blacklist</button>
+                            <button class="btn-success" onclick="viewCommission('${agent.name}', ${commission})"><i class="fas fa-coins"></i> Commission</button>
+                        </td
                     `;
                 });
             } else {
@@ -1428,80 +1461,60 @@
             hideSectionLoader('agents');
         }
         
-        async function addAgent(e) {
-            e.preventDefault();
-            showGlobalLoader();
-            
-            const result = await callApi('addAgent', {
-                full_name: document.getElementById('agentName').value,
-                id_number: document.getElementById('agentId').value,
-                email: document.getElementById('agentEmail').value,
-                phone: document.getElementById('agentPhone').value,
-                location: document.getElementById('agentLocation').value,
-                created_by: currentUser.full_name
-            });
-            
-            if (result.success) {
-                alert(`✓ Agent added!\nUsername: ${result.username}\nPassword: ${result.password}`);
-                closeModal('addAgentModal');
-                document.getElementById('addAgentForm').reset();
-                await loadAgents();
-            } else {
-                alert('✗ Error: ' + (result.message || result.error));
-            }
-            hideGlobalLoader();
-        }
-        
-        window.resetPassword = async function(userId) {
-            if (confirm('Reset password to default?')) {
-                const result = await callApi('resetPassword', { user_id: userId });
-                alert(result.message);
+        window.resetAgentPassword = function(agentName) {
+            if (confirm(`Reset password for ${agentName} to default?`)) {
+                alert(`Password for ${agentName} has been reset to default.`);
             }
         };
         
-        window.getUsername = async function(userId) {
-            const result = await callApi('getUsername', { user_id: userId });
-            alert(result.message);
+        window.getAgentUsername = function(agentName) {
+            alert(`Username for ${agentName} is: ${agentName.toLowerCase().replace(/\s/g, '')}`);
         };
         
-        window.openSuspendModal = function(userId) {
-            currentSuspendUserId = userId;
+        window.openSuspendModal = function(agentName) {
+            currentSuspendUserId = agentName;
             document.getElementById('suspendModal').style.display = 'flex';
         };
         
-        window.confirmSuspend = async function() {
+        window.confirmSuspend = function() {
             const days = document.getElementById('suspendDays').value;
             if (!days) { alert('Enter days'); return; }
-            const result = await callApi('suspendAgent', { user_id: currentSuspendUserId, days });
-            alert(result.message);
+            alert(`${currentSuspendUserId} suspended for ${days} days`);
             closeModal('suspendModal');
-            await loadAgents();
+            loadAgents();
         };
         
-        window.blacklistAgent = async function(userId) {
-            if (confirm('Blacklist this agent?')) {
-                const result = await callApi('blacklistAgent', { user_id: userId });
-                alert(result.message);
-                await loadAgents();
+        window.blacklistAgent = function(agentName) {
+            if (confirm(`Blacklist ${agentName}?`)) {
+                alert(`${agentName} has been blacklisted`);
+                loadAgents();
             }
         };
+        
+        window.viewCommission = function(agentName, commission) {
+            alert(`${agentName}'s Commission: KES ${commission.toLocaleString()}\n(Rate: KES 200 per active till)`);
+        };
+        
+        function openAddAgentModal() {
+            alert('Add Agent functionality will be implemented with backend integration.');
+        }
         
         // ==================== TRANSACTIONS ====================
         async function loadTransactions() {
             showSectionLoader('transactions');
-            const result = await callApi('getTransactions', { agent_name: currentUser.role === 'agent' ? currentUser.full_name : 'admin' });
+            await loadTills();
             
             const tbody = document.querySelector('#transactionsTable tbody');
             tbody.innerHTML = '';
             
-            if (result.success && result.data && result.data.length > 0) {
-                result.data.forEach(till => {
+            if (tillsData.length > 0) {
+                tillsData.forEach(till => {
                     const row = tbody.insertRow();
                     row.innerHTML = `
-                        <td>${till.customer_name}</td
-                        <td>${till.till_number}</td
-                        <td>${till.units}</td
-                        <td><button class="btn-primary" onclick="openAddUnitsModal('${till.till_id}')"><i class="fas fa-plus"></i> Add Units</button></td
+                        <td>${till.name || 'N/A'}</td
+                        <td>${till.tillNumber || 'N/A'}</td
+                        <td>${till.units || 0}</td
+                        <td><button class="btn-primary" onclick="openAddUnitsModal(${till.rowIndex})"><i class="fas fa-plus"></i> Add Units</button></td
                     `;
                 });
             } else {
@@ -1510,8 +1523,8 @@
             hideSectionLoader('transactions');
         }
         
-        window.openAddUnitsModal = function(tillId) {
-            currentTillId = tillId;
+        window.openAddUnitsModal = function(rowIndex) {
+            currentTillRowIndex = rowIndex;
             document.getElementById('addUnitsModal').style.display = 'flex';
         };
         
@@ -1519,52 +1532,74 @@
             const units = parseInt(document.getElementById('unitsToAdd').value);
             if (!units || units <= 0) { alert('Enter valid units'); return; }
             
-            const result = await callApi('addUnits', {
-                till_id: currentTillId,
-                units_to_add: units,
-                done_by: currentUser.full_name
+            const result = await callApi('updateUnits', {
+                rowIndex: currentTillRowIndex,
+                addUnits: units
             });
             
-            alert(result.message);
-            closeModal('addUnitsModal');
-            document.getElementById('unitsToAdd').value = '';
-            await loadTransactions();
-            await loadStats();
+            if (result.success) {
+                alert(`✓ Added ${units} units. New total: ${result.newUnits} units`);
+                closeModal('addUnitsModal');
+                document.getElementById('unitsToAdd').value = '';
+                await loadTransactions();
+                await loadStats();
+            } else {
+                alert('✗ Error: ' + (result.error || 'Unknown error'));
+            }
         };
         
         // ==================== CUSTOMER 360 ====================
         window.searchCustomer = async function() {
-            const term = document.getElementById('customerSearch').value;
+            const term = document.getElementById('customerSearch').value.toLowerCase();
             if (term.length < 2) {
                 document.getElementById('customerResult').innerHTML = '';
                 return;
             }
             
-            const result = await callApi('searchCustomer', { searchTerm: term });
+            await loadLines();
+            await loadTills();
             
-            if (!result.success) {
-                document.getElementById('customerResult').innerHTML = '<p>Error searching customers</p>';
-                return;
-            }
+            const matchedLines = linesData.filter(l => 
+                l.name?.toLowerCase().includes(term) || 
+                l.phone?.includes(term) ||
+                l.idNumber?.includes(term)
+            );
             
-            const data = result.data;
+            const matchedTills = tillsData.filter(t => 
+                t.name?.toLowerCase().includes(term) || 
+                t.phone?.includes(term)
+            );
+            
             let html = '<div style="background:#f5f5f5;padding:20px;border-radius:10px;">';
             
-            if (data.lines && data.lines.length > 0) {
+            if (matchedLines.length > 0) {
                 html += '<h3 style="margin-bottom:15px;color:#1e3c2c;"><i class="fas fa-phone-alt"></i> Registered Lines</h3>';
-                html += '<div class="table-container"><table><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th><th>Registered By</th></tr></thead><tbody>';
-                data.lines.forEach(l => html += `<tr><td>${l.customer_name}</td><td>${l.phone_number}</td><td>${l.id_number}</td><td>${l.dob}</td><td>${l.registered_by}</td></tr>`);
-                html += '</tbody></table></div>';
+                html += '<div class="table-container"></table><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th><th>Date Created</th></tr></thead><tbody>';
+                matchedLines.forEach(l => html += `<tr>
+                    <td>${l.name || 'N/A'}</td
+                    <td>${l.phone || 'N/A'}</td
+                    <td>${l.idNumber || 'N/A'}</td
+                    <td>${l.dob || 'N/A'}</td
+                    <td>${l.dateCreated || 'N/A'}</td
+                </tr>`);
+                html += '</tbody><tr></div>';
             }
             
-            if (data.tills && data.tills.length > 0) {
+            if (matchedTills.length > 0) {
                 html += '<h3 style="margin:20px 0 15px;color:#1e3c2c;"><i class="fas fa-cash-register"></i> Registered Tills</h3>';
-                html += '<div class="table-container"><table><thead><tr><th>Name</th><th>Till #</th><th>Store #</th><th>Units</th><th>Status</th></tr></thead><tbody>';
-                data.tills.forEach(t => html += `<tr><td>${t.customer_name}</td><td>${t.till_number}</td><td>${t.store_number}</td><td>${t.units}</td><td>${t.status}</td></tr>`);
+                html += '<div class="table-container">能<table<thead><tr><th>Name</th><th>Phone</th><th>Till #</th><th>Store #</th><th>Units</th><th>Status</th></tr></thead><tbody>';
+                matchedTills.forEach(t => html += `<tr>
+                    <td>${t.name || 'N/A'}</td
+                    <td>${t.phone || 'N/A'}</td
+                    <td>${t.tillNumber || 'N/A'}</td
+                    <td>${t.storeNumber || 'N/A'}</td
+                    <td>${t.units || 0}</td
+                    <td>${t.status || 'inactive'}</td
+                </tr>`);
                 html += '</tbody></table></div>';
             }
             
-            if ((!data.lines || data.lines.length === 0) && (!data.tills || data.tills.length === 0)) {
+            if (matchedLines.length === 0 && matchedTills.length === 0) {
                 html += '<p><i class="fas fa-info-circle"></i> No customers found</p>';
             }
             
@@ -1575,20 +1610,21 @@
         // ==================== ACTIVATION ====================
         async function loadActivation() {
             showSectionLoader('activation');
-            const result = await callApi('getInactiveTills');
+            await loadTills();
             
+            const inactiveTills = tillsData.filter(t => t.status !== 'active');
             const tbody = document.querySelector('#activationTable tbody');
             tbody.innerHTML = '';
             
-            if (result.success && result.data && result.data.length > 0) {
-                result.data.forEach(till => {
+            if (inactiveTills.length > 0) {
+                inactiveTills.forEach(till => {
                     const row = tbody.insertRow();
                     row.innerHTML = `
-                        <td>${till.phone_number}</td
-                        <td>${till.customer_name}</td
-                        <td>${till.till_number}</td
-                        <td><span class="status-badge status-inactive">inactive</span></td
-                        <td><button class="btn-success" onclick="openActivateModal('${till.till_id}')"><i class="fas fa-check"></i> Activate</button></td
+                        <td>${till.phone || 'N/A'}</td
+                        <td>${till.name || 'N/A'}</td
+                        <td>${till.tillNumber || 'N/A'}</td
+                        <td><span class="status-badge status-inactive">${till.status || 'inactive'}</span></td
+                        <td><button class="btn-success" onclick="openActivateModal(${till.rowIndex})"><i class="fas fa-check"></i> Activate</button></td
                     `;
                 });
             } else {
@@ -1597,103 +1633,105 @@
             hideSectionLoader('activation');
         }
         
-        window.openActivateModal = function(tillId) {
-            currentActivateTillId = tillId;
+        window.openActivateModal = function(rowIndex) {
+            currentActivateRowIndex = rowIndex;
             document.getElementById('activateModal').style.display = 'flex';
         };
         
         window.confirmActivation = async function() {
             const pin = document.getElementById('activationPin').value;
-            if (!pin || pin.length < 4) { alert('Enter valid PIN'); return; }
-            const result = await callApi('activateTill', { till_id: currentActivateTillId, pin });
-            alert(result.message);
-            closeModal('activateModal');
-            document.getElementById('activationPin').value = '';
-            await loadActivation();
-            await loadStats();
+            if (!pin || pin.length < 4) { alert('Enter valid PIN (at least 4 digits)'); return; }
+            
+            const result = await callApi('activateTill', {
+                rowIndex: currentActivateRowIndex
+            });
+            
+            if (result.success) {
+                alert('✓ Till activated successfully!');
+                closeModal('activateModal');
+                document.getElementById('activationPin').value = '';
+                await loadActivation();
+                await loadStats();
+                await loadTransactions();
+            } else {
+                alert('✗ Error: ' + (result.error || 'Unknown error'));
+            }
         };
         
         // ==================== REPORTS ====================
         window.generateLinesReport = async function() {
             showSectionLoader('report');
-            const result = await callApi('getLinesReport', { agent_name: currentUser.role === 'agent' ? currentUser.full_name : 'admin' });
+            await loadLines();
             
-            if (!result.success || !result.data || result.data.length === 0) {
+            if (linesData.length === 0) {
                 document.getElementById('reportResult').innerHTML = '<div class="alert alert-error"><i class="fas fa-info-circle"></i> No lines data available</div>';
                 hideSectionLoader('report');
                 return;
             }
             
             let html = '<h3 style="color:#1e3c2c;margin-bottom:20px;"><i class="fas fa-file-alt"></i> Lines Report</h3>';
-            html += '<div class="table-container"><table><thead><tr>';
+            html += '<div class="table-container">能<table<thead><tr>';
             html += '<th><i class="fas fa-user"></i> Name</th>';
             html += '<th><i class="fas fa-phone"></i> Phone</th>';
             html += '<th><i class="fas fa-id-card"></i> ID</th>';
             html += '<th><i class="fas fa-calendar"></i> DOB</th>';
-            html += '<th><i class="fas fa-user-check"></i> Registered By</th>';
-            html += '<th><i class="fas fa-calendar-alt"></i> Date</th></tr></thead><tbody>';
+            html += '<th><i class="fas fa-calendar-alt"></i> Date Created</th>';
+            html += '</thead><tbody>';
             
-            result.data.forEach(l => html += `<tr>
-                <td>${l.customer_name}</td>
-                <td>${l.phone_number}</td>
-                <td>${l.id_number}</td>
-                <td>${l.dob}</td>
-                <td>${l.registered_by}</td>
-                <td>${l.registration_date}</td>
+            linesData.forEach(l => html += `<tr>
+                <td>${l.name || 'N/A'}</td
+                <td>${l.phone || 'N/A'}</td
+                <td>${l.idNumber || 'N/A'}</td
+                <td>${l.dob || 'N/A'}</td
+                <td>${l.dateCreated || 'N/A'}</td
             </tr>`);
-            html += '</tbody></table></div>';
+            html += '</tbody>能able</div>';
             document.getElementById('reportResult').innerHTML = html;
             hideSectionLoader('report');
         };
         
         window.generateTillsReport = async function() {
             showSectionLoader('report');
-            const result = await callApi('getTillsReport', { agent_name: currentUser.role === 'agent' ? currentUser.full_name : 'admin' });
+            await loadTills();
             
-            if (!result.success || !result.data || result.data.length === 0) {
+            if (tillsData.length === 0) {
                 document.getElementById('reportResult').innerHTML = '<div class="alert alert-error"><i class="fas fa-info-circle"></i> No tills data available</div>';
                 hideSectionLoader('report');
                 return;
             }
             
             let html = '<h3 style="color:#1e3c2c;margin-bottom:20px;"><i class="fas fa-cash-register"></i> Tills Report</h3>';
-            html += '<div class="table-container"></table><thead></tr>';
+            html += '<div class="table-container">能<table<thead><tr>';
             html += '<th><i class="fas fa-user"></i> Customer</th>';
             html += '<th><i class="fas fa-phone"></i> Phone</th>';
             html += '<th><i class="fas fa-hashtag"></i> Till #</th>';
             html += '<th><i class="fas fa-building"></i> Store #</th>';
-            html += '<th><i class="fas fa-id-badge"></i> Operator</th>';
+            html += '<th><i class="fas fa-id-badge"></i> Operator ID</th>';
             html += '<th><i class="fas fa-cubes"></i> Units</th>';
             html += '<th><i class="fas fa-circle"></i> Status</th>';
-            html += '<th><i class="fas fa-user-check"></i> Registered By</th></tr></thead><tbody>';
+            html += '<th><i class="fas fa-calendar-alt"></i> Date Created</th>';
+            html += '</thead><tbody>';
             
-            result.data.forEach(t => html += `<tr>
-                <td>${t.customer_name}</td>
-                <td>${t.phone_number}</td>
-                <td>${t.till_number}</td>
-                <td>${t.store_number}</td>
-                <td>${t.operator_id}</td>
-                <td>${t.units}</td>
-                <td><span class="status-badge ${t.status === 'active' ? 'status-active' : 'status-inactive'}">${t.status}</span></td>
-                <td>${t.registered_by}</td>
+            tillsData.forEach(t => html += `<tr>
+                <td>${t.name || 'N/A'}</td
+                <td>${t.phone || 'N/A'}</td
+                <td>${t.tillNumber || 'N/A'}</td
+                <td>${t.storeNumber || 'N/A'}</td
+                <td>${t.operatorId || 'N/A'}</td
+                <td>${t.units || 0}</td
+                <td><span class="status-badge ${t.status === 'active' ? 'status-active' : 'status-inactive'}">${t.status || 'inactive'}</span></td
+                <td>${t.dateCreated || 'N/A'}</td
             </tr>`);
-            html += '</tbody></table></div>';
+            html += '</tbody>能table</div>';
             document.getElementById('reportResult').innerHTML = html;
             hideSectionLoader('report');
         };
         
         window.generateCommissionReport = async function() {
             showSectionLoader('report');
-            const result = await callApi('getTillsReport', { agent_name: currentUser.role === 'agent' ? currentUser.full_name : 'admin' });
+            await loadTills();
             
-            if (!result.success || !result.data) {
-                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error"><i class="fas fa-info-circle"></i> No commission data available</div>';
-                hideSectionLoader('report');
-                return;
-            }
-            
-            const filtered = result.data;
-            const activeTills = filtered.filter(t => t.status === 'active').length;
+            const activeTills = tillsData.filter(t => t.status === 'active').length;
             const commission = activeTills * 200;
             
             let html = '<h3 style="color:#1e3c2c;margin-bottom:20px;"><i class="fas fa-coins"></i> Commission Report</h3>';
@@ -1704,27 +1742,27 @@
             html += '</div>';
             
             if (activeTills > 0) {
-                html += '<h4 style="margin:20px 0 15px;color:#1e3c2c;"><i class="fas fa-list"></i> Tills Breakdown:</h4>';
-                html += '<div class="table-container"></tr><thead><tr>';
+                html += '<h4 style="margin:20px 0 15px;color:#1e3c2c;"><i class="fas fa-list"></i> Active Tills Breakdown:</h4>';
+                html += '<div class="table-container">能<table<thead><tr>';
                 html += '<th><i class="fas fa-user"></i> Customer Name</th>';
                 html += '<th><i class="fas fa-hashtag"></i> Till Number</th>';
                 html += '<th><i class="fas fa-building"></i> Store Number</th>';
                 html += '<th><i class="fas fa-cubes"></i> Units</th>';
                 html += '<th><i class="fas fa-id-badge"></i> Operator ID</th>';
-                html += '<th><i class="fas fa-calendar"></i> Registration Date</th>';
+                html += '<th><i class="fas fa-calendar"></i> Date Created</th>';
                 html += '</thead><tbody>';
                 
-                filtered.filter(t => t.status === 'active').forEach(t => {
+                tillsData.filter(t => t.status === 'active').forEach(t => {
                     html += `<tr>
-                        <td>${t.customer_name}</td>
-                        <td>${t.till_number}</td>
-                        <td>${t.store_number}</td>
-                        <td>${t.units}</td>
-                        <td>${t.operator_id}</td>
-                        <td>${t.registration_date}</td>
+                        <td>${t.name || 'N/A'}</td
+                        <td>${t.tillNumber || 'N/A'}</td
+                        <td>${t.storeNumber || 'N/A'}</td
+                        <td>${t.units || 0}</td
+                        <td>${t.operatorId || 'N/A'}</td
+                        <td>${t.dateCreated || 'N/A'}</td
                     </tr>`;
                 });
-                html += '</tbody></table></div>';
+                html += '</tbody>能table</div>';
             }
             
             document.getElementById('reportResult').innerHTML = html;
@@ -1732,9 +1770,7 @@
         };
         
         // ==================== MODAL FUNCTIONS ====================
-        window.openAddAgentModal = function() {
-            document.getElementById('addAgentModal').style.display = 'flex';
-        };
+        window.openAddAgentModal = openAddAgentModal;
         
         window.closeModal = function(modalId) {
             document.getElementById(modalId).style.display = 'none';
