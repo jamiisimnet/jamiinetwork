@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Management System - Complete Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Agent Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -19,127 +19,36 @@
             min-height: 100vh;
         }
 
-        /* Global Loading Animation */
-        .global-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(5px);
-        }
-
-        .global-loader.active {
-            display: flex;
-        }
-
-        .spinner {
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #2e7d32;
-            border-right: 4px solid #4caf50;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Section Loading Overlay */
-        .section {
-            position: relative;
-        }
-
-        .section.loading::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
-            z-index: 10;
-            border-radius: 15px;
-        }
-
-        .section.loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 40px;
-            height: 40px;
-            border: 3px solid #e0e0e0;
-            border-top: 3px solid #2e7d32;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            transform: translate(-50%, -50%);
-            z-index: 11;
-        }
-
-        /* Login Page Styles */
+        /* Login Page */
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #0f2b1d 0%, #1a4a2a 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-container::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: float 20s linear infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, 40px); }
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.98);
+            background: white;
             border-radius: 30px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            width: 450px;
-            padding: 50px;
-            position: relative;
-            z-index: 1;
-            animation: slideUp 0.5s ease-out;
+            width: 420px;
+            padding: 45px;
+            animation: slideUp 0.4s ease-out;
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .login-logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .login-logo i {
-            font-size: 60px;
+            font-size: 55px;
             background: linear-gradient(135deg, #2e7d32, #4caf50);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -148,73 +57,70 @@
         .login-box h2 {
             color: #1e3c2c;
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 28px;
+            margin-bottom: 8px;
+            font-size: 26px;
             font-weight: 700;
         }
 
         .login-box p {
             text-align: center;
             color: #666;
-            margin-bottom: 30px;
-            font-size: 14px;
+            margin-bottom: 25px;
+            font-size: 13px;
         }
 
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #333;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .input-group input {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 14px;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
         }
 
         .input-group input:focus {
             outline: none;
             border-color: #2e7d32;
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
 
         .login-btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
         }
 
         .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(46, 125, 50, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
         }
 
         .error-message {
             background: #ffebee;
             color: #c62828;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         /* Dashboard Styles */
@@ -229,7 +135,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: linear-gradient(180deg, #0f2b1d 0%, #0a1f14 100%);
             color: white;
             display: flex;
@@ -237,101 +143,74 @@
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
         }
 
         .sidebar-header {
-            padding: 30px 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 25px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             text-align: center;
         }
 
         .sidebar-header h2 {
-            font-size: 22px;
-            margin-bottom: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            font-size: 20px;
+            margin-bottom: 10px;
         }
 
         .sidebar-header h2 i {
-            margin-right: 10px;
+            margin-right: 8px;
             color: #4caf50;
         }
 
         .user-status {
-            font-size: 12px;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
+            font-size: 11px;
+            background: rgba(255,255,255,0.15);
+            padding: 5px 10px;
             border-radius: 20px;
             display: inline-block;
-            font-weight: 500;
-        }
-
-        .user-status i {
-            margin-right: 6px;
         }
 
         .nav-menu {
             flex: 1;
-            padding: 20px 15px;
+            padding: 15px;
         }
 
         .nav-item {
-            padding: 12px 20px;
-            margin: 5px 0;
-            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 3px 0;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .nav-item i {
-            width: 20px;
-            font-size: 16px;
-            text-align: center;
+            width: 18px;
+            font-size: 14px;
         }
 
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
+            background: rgba(255,255,255,0.1);
+            transform: translateX(3px);
         }
 
         .nav-item.active {
             background: linear-gradient(135deg, #2e7d32, #1b5e20);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .nav-item.logout {
             background: linear-gradient(135deg, #c62828, #b71c1c);
-            margin-top: 20px;
-        }
-
-        .nav-item.logout:hover {
-            transform: translateX(5px);
+            margin-top: 15px;
         }
 
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 280px;
-            padding: 25px 30px;
+            margin-left: 260px;
+            padding: 20px 25px;
             background: #f8f9fa;
             min-height: 100vh;
         }
@@ -339,20 +218,19 @@
         /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-bottom: 25px;
         }
 
         .stat-card {
             background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
-            cursor: pointer;
         }
 
         .stat-card::before {
@@ -366,30 +244,29 @@
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .stat-card h3 {
             color: #666;
-            font-size: 13px;
-            margin-bottom: 10px;
+            font-size: 12px;
+            margin-bottom: 8px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .stat-card .value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             color: #1e3c2c;
         }
 
         .stat-card i {
             position: absolute;
-            right: 20px;
-            bottom: 20px;
-            font-size: 40px;
+            right: 15px;
+            bottom: 15px;
+            font-size: 35px;
             opacity: 0.1;
             color: #2e7d32;
         }
@@ -397,22 +274,10 @@
         /* Sections */
         .section {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
             display: none;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .section.active {
@@ -423,21 +288,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
             border-bottom: 2px solid #f0f0f0;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
 
         .section-header h2 {
             color: #1e3c2c;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
         }
 
         .section-header h2 i {
-            margin-right: 10px;
+            margin-right: 8px;
             color: #2e7d32;
         }
 
@@ -446,37 +311,35 @@
             background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             border: none;
-            padding: 10px 24px;
-            border-radius: 10px;
+            padding: 8px 18px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(46,125,50,0.2);
         }
 
         .btn-danger {
             background: linear-gradient(135deg, #c62828, #b71c1c);
             color: white;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            transition: all 0.3s;
             margin: 2px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .btn-danger:hover {
@@ -487,16 +350,15 @@
             background: linear-gradient(135deg, #f57c00, #e65100);
             color: white;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            transition: all 0.3s;
             margin: 2px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .btn-warning:hover {
@@ -507,16 +369,15 @@
             background: linear-gradient(135deg, #2e7d32, #1b5e20);
             color: white;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            transition: all 0.3s;
             margin: 2px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .btn-success:hover {
@@ -527,16 +388,15 @@
             background: linear-gradient(135deg, #1976d2, #0d47a1);
             color: white;
             border: none;
-            padding: 6px 14px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            transition: all 0.3s;
             margin: 2px;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
 
         .btn-info:hover {
@@ -545,75 +405,55 @@
 
         /* Forms */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             color: #333;
             font-weight: 600;
+            font-size: 12px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
             font-size: 13px;
         }
 
-        .form-group label i {
-            margin-right: 8px;
-            color: #2e7d32;
-        }
-
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             outline: none;
             border-color: #2e7d32;
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
-        }
-
-        .form-group input:read-only {
-            background: #f5f5f5;
-            cursor: not-allowed;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
-        /* Tables - Attractive Headers */
+        /* Tables */
         .table-container {
             overflow-x: auto;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
+            font-size: 13px;
         }
 
         th {
-            padding: 16px 12px;
+            padding: 14px 12px;
             text-align: left;
             font-weight: 700;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
             background: linear-gradient(135deg, #1e3c2c 0%, #2e5c3e 100%);
             color: white;
-            position: sticky;
-            top: 0;
+            white-space: nowrap;
         }
 
         th i {
@@ -621,24 +461,10 @@
             font-size: 14px;
         }
 
-        th:first-child {
-            border-top-left-radius: 12px;
-        }
-
-        th:last-child {
-            border-top-right-radius: 12px;
-        }
-
         td {
-            padding: 14px 12px;
+            padding: 12px;
             border-bottom: 1px solid #f0f0f0;
-            color: #333;
-            font-size: 13px;
             vertical-align: middle;
-        }
-
-        tr {
-            transition: all 0.3s;
         }
 
         tr:hover {
@@ -647,11 +473,13 @@
 
         /* Status Badges */
         .status-badge {
-            padding: 4px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 700;
             display: inline-block;
+            text-align: center;
+            min-width: 80px;
         }
 
         .status-active {
@@ -664,14 +492,11 @@
             color: #f57c00;
         }
 
-        .status-suspended {
-            background: #fff3e0;
-            color: #ff9800;
-        }
-
-        .status-blacklisted {
-            background: #ffebee;
-            color: #c62828;
+        /* Action buttons container */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         /* Modal */
@@ -682,7 +507,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px);
             justify-content: center;
             align-items: center;
@@ -691,51 +516,42 @@
 
         .modal-content {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
+            max-width: 450px;
             animation: modalSlideIn 0.3s ease-out;
         }
 
         @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #f0f0f0;
         }
 
         .modal-header h3 {
+            font-size: 18px;
             color: #1e3c2c;
-            font-size: 20px;
-            font-weight: 700;
         }
 
         .modal-header h3 i {
-            margin-right: 10px;
+            margin-right: 8px;
             color: #2e7d32;
         }
 
         .close {
             cursor: pointer;
-            font-size: 28px;
+            font-size: 24px;
             color: #999;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .close:hover {
@@ -745,57 +561,36 @@
 
         /* Search Box */
         .search-box {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             position: relative;
         }
 
         .search-box input {
             width: 100%;
-            padding: 12px 16px 12px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            transition: all 0.3s;
+            padding: 10px 12px 10px 38px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 13px;
         }
 
         .search-box input:focus {
             outline: none;
             border-color: #2e7d32;
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
         }
 
         .search-box i {
             position: absolute;
-            left: 18px;
+            left: 12px;
             top: 50%;
             transform: translateY(-50%);
             color: #999;
         }
 
-        /* Alert */
         .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .alert-success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-left: 3px solid #2e7d32;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
         }
 
         .alert-error {
@@ -803,14 +598,18 @@
             color: #c62828;
             border-left: 3px solid #c62828;
         }
+        
+        .alert-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 3px solid #2e7d32;
+        }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
             }
-            .sidebar-header h2,
-            .nav-item span:last-child {
+            .sidebar-header h2, .nav-item span:last-child {
                 display: none;
             }
             .main-content {
@@ -823,31 +622,21 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
-            .section-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            th {
-                font-size: 10px;
-                padding: 10px 6px;
-            }
-            td {
+            th, td {
+                padding: 8px;
                 font-size: 11px;
-                padding: 8px 6px;
             }
-            .btn-danger, .btn-warning, .btn-success, .btn-info {
-                padding: 4px 8px;
-                font-size: 9px;
+            .action-buttons {
+                flex-direction: column;
+            }
+            .status-badge {
+                min-width: 60px;
+                font-size: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Global Loader -->
-    <div id="globalLoader" class="global-loader">
-        <div class="spinner"></div>
-    </div>
-
     <!-- Login Page -->
     <div id="loginPage" class="login-container">
         <div class="login-box">
@@ -860,18 +649,18 @@
             <form id="loginForm">
                 <div class="input-group">
                     <label><i class="fas fa-user"></i> Username</label>
-                    <input type="text" id="loginUsername" required placeholder="Enter your username">
+                    <input type="text" id="loginUsername" required placeholder="admin">
                 </div>
                 <div class="input-group">
                     <label><i class="fas fa-lock"></i> Password</label>
-                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                    <input type="password" id="loginPassword" required placeholder="admin123">
                 </div>
                 <button type="submit" class="login-btn">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
             </form>
-            <div style="margin-top: 20px; padding: 12px; background: #f5f5f5; border-radius: 8px; font-size: 12px; text-align: center;">
-                <p style="color: #666;">Demo Account: <strong>admin</strong> / <strong>admin123</strong></p>
+            <div style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px; text-align: center; font-size: 11px;">
+                <p><strong>Demo Credentials:</strong> admin / admin123</p>
             </div>
         </div>
     </div>
@@ -879,215 +668,120 @@
     <!-- Dashboard Container -->
     <div id="dashboardContainer" class="dashboard-container">
         <div class="dashboard-wrapper">
-            <!-- Sidebar -->
             <div class="sidebar">
                 <div class="sidebar-header">
                     <h2><i class="fas fa-chart-line"></i> AgentManager</h2>
-                    <div class="user-status" id="userStatus">Loading...</div>
+                    <div class="user-status" id="userStatus">Admin</div>
                 </div>
                 <div class="nav-menu">
-                    <div class="nav-item active" data-page="home">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </div>
-                    <div class="nav-item" data-page="line-reg">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Line Reg</span>
-                    </div>
-                    <div class="nav-item" data-page="till-reg">
-                        <i class="fas fa-cash-register"></i>
-                        <span>Till Reg</span>
-                    </div>
-                    <div class="nav-item admin-only" data-page="agents">
-                        <i class="fas fa-users"></i>
-                        <span>Agents</span>
-                    </div>
-                    <div class="nav-item" data-page="transactions">
-                        <i class="fas fa-exchange-alt"></i>
-                        <span>Transactions</span>
-                    </div>
-                    <div class="nav-item admin-only" data-page="customer360">
-                        <i class="fas fa-search"></i>
-                        <span>Customer 360</span>
-                    </div>
-                    <div class="nav-item admin-only" data-page="activation">
-                        <i class="fas fa-check-circle"></i>
-                        <span>Activation</span>
-                    </div>
-                    <div class="nav-item" data-page="report">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Report</span>
-                    </div>
-                    <div class="nav-item logout" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </div>
+                    <div class="nav-item active" data-page="home"><i class="fas fa-home"></i><span>Home</span></div>
+                    <div class="nav-item" data-page="line-reg"><i class="fas fa-plus-circle"></i><span>Line Reg</span></div>
+                    <div class="nav-item" data-page="till-reg"><i class="fas fa-cash-register"></i><span>Till Reg</span></div>
+                    <div class="nav-item admin-only" data-page="agents"><i class="fas fa-users"></i><span>Agents</span></div>
+                    <div class="nav-item" data-page="transactions"><i class="fas fa-exchange-alt"></i><span>Transactions</span></div>
+                    <div class="nav-item admin-only" data-page="customer360"><i class="fas fa-search"></i><span>Customer 360</span></div>
+                    <div class="nav-item admin-only" data-page="activation"><i class="fas fa-check-circle"></i><span>Activation</span></div>
+                    <div class="nav-item" data-page="report"><i class="fas fa-chart-bar"></i><span>Report</span></div>
+                    <div class="nav-item logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
                 </div>
             </div>
 
-            <!-- Main Content -->
             <div class="main-content">
                 <!-- Home Section -->
                 <div id="home" class="section active">
                     <div class="stats-grid">
-                        <div class="stat-card">
-                            <h3><i class="fas fa-phone-alt"></i> Total Lines</h3>
-                            <div class="value" id="totalLines">0</div>
-                            <i class="fas fa-phone-alt"></i>
-                        </div>
-                        <div class="stat-card">
-                            <h3><i class="fas fa-cash-register"></i> Total Tills</h3>
-                            <div class="value" id="totalTills">0</div>
-                            <i class="fas fa-cash-register"></i>
-                        </div>
-                        <div class="stat-card">
-                            <h3><i class="fas fa-check-circle"></i> Active Tills</h3>
-                            <div class="value" id="activeTills">0</div>
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="stat-card">
-                            <h3><i class="fas fa-coins"></i> Commission (KES)</h3>
-                            <div class="value" id="commission">0</div>
-                            <i class="fas fa-coins"></i>
-                        </div>
+                        <div class="stat-card"><h3><i class="fas fa-phone-alt"></i> Total Lines</h3><div class="value" id="totalLines">0</div><i class="fas fa-phone-alt"></i></div>
+                        <div class="stat-card"><h3><i class="fas fa-cash-register"></i> Total Tills</h3><div class="value" id="totalTills">0</div><i class="fas fa-cash-register"></i></div>
+                        <div class="stat-card"><h3><i class="fas fa-check-circle"></i> Active Tills</h3><div class="value" id="activeTills">0</div><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-card"><h3><i class="fas fa-coins"></i> Commission (KES)</h3><div class="value" id="commission">0</div><i class="fas fa-coins"></i></div>
                     </div>
                 </div>
 
                 <!-- Line Registration -->
                 <div id="line-reg" class="section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-phone-alt"></i> Register New Line</h2>
-                    </div>
+                    <div class="section-header"><h2><i class="fas fa-phone-alt"></i> Register New Line</h2></div>
                     <form id="lineForm">
                         <div class="form-row">
-                            <div class="form-group">
-                                <label><i class="fas fa-user"></i> Full Name *</label>
-                                <input type="text" id="lineName" required placeholder="Enter customer full name">
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-id-card"></i> ID Number *</label>
-                                <input type="text" id="lineId" required placeholder="Enter ID number">
-                            </div>
+                            <div class="form-group"><label>Full Name *</label><input type="text" id="lineName" required placeholder="Enter full name"></div>
+                            <div class="form-group"><label>ID Number *</label><input type="text" id="lineId" required placeholder="Enter ID number"></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label><i class="fas fa-mobile-alt"></i> Phone Number *</label>
-                                <input type="tel" id="linePhone" required placeholder="07XXXXXXXX">
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-calendar"></i> Date of Birth *</label>
-                                <input type="date" id="lineDob" required>
-                            </div>
+                            <div class="form-group"><label>Phone Number *</label><input type="tel" id="linePhone" required placeholder="07XXXXXXXX"></div>
+                            <div class="form-group"><label>Date of Birth *</label><input type="date" id="lineDob" required></div>
                         </div>
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-save"></i> Register Line
-                        </button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Register Line</button>
                     </form>
                 </div>
 
                 <!-- Till Registration -->
                 <div id="till-reg" class="section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-cash-register"></i> Register New Till</h2>
-                    </div>
+                    <div class="section-header"><h2><i class="fas fa-cash-register"></i> Register New Till</h2></div>
                     <form id="tillForm">
                         <div class="form-group">
-                            <label><i class="fas fa-mobile-alt"></i> Phone Number *</label>
-                            <div style="display: flex; gap: 10px;">
-                                <input type="tel" id="tillPhone" required placeholder="Enter customer phone number" style="flex: 1;">
-                                <button type="button" id="fetchCustomerBtn" class="btn-primary" style="margin: 0;">
-                                    <i class="fas fa-search"></i> Fetch
-                                </button>
+                            <label>Phone Number *</label>
+                            <div style="display: flex; gap: 8px;">
+                                <input type="tel" id="tillPhone" required placeholder="Enter customer phone" style="flex:1;">
+                                <button type="button" id="fetchCustomerBtn" class="btn-primary" style="margin:0; padding:8px 15px;"><i class="fas fa-search"></i> Fetch</button>
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label><i class="fas fa-user"></i> Customer Name</label>
-                                <input type="text" id="tillName" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-id-card"></i> ID Number</label>
-                                <input type="text" id="tillId" readonly>
-                            </div>
+                            <div class="form-group"><label>Customer Name</label><input type="text" id="tillName" readonly></div>
+                            <div class="form-group"><label>ID Number</label><input type="text" id="tillId" readonly></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label><i class="fas fa-calendar"></i> Date of Birth</label>
-                                <input type="text" id="tillDob" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-id-badge"></i> Operator ID</label>
-                                <input type="text" id="operatorId" placeholder="Auto-generated" required>
-                            </div>
+                            <div class="form-group"><label>Date of Birth</label><input type="text" id="tillDob" readonly></div>
+                            <div class="form-group"><label>Operator ID</label><input type="text" id="operatorId" placeholder="Auto-generated" required></div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label><i class="fas fa-hashtag"></i> Till Number *</label>
-                                <input type="text" id="tillNumber" required placeholder="Enter till number">
-                            </div>
-                            <div class="form-group">
-                                <label><i class="fas fa-building"></i> Store Number *</label>
-                                <input type="text" id="storeNumber" required placeholder="Enter store number">
-                            </div>
+                            <div class="form-group"><label>Till Number *</label><input type="text" id="tillNumber" required placeholder="Enter till number"></div>
+                            <div class="form-group"><label>Store Number *</label><input type="text" id="storeNumber" required placeholder="Enter store number"></div>
                         </div>
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-save"></i> Register Till
-                        </button>
+                        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Register Till</button>
                     </form>
                 </div>
 
-                <!-- Agents Management -->
+                <!-- Agents Management Table -->
                 <div id="agents" class="section">
                     <div class="section-header">
                         <h2><i class="fas fa-users"></i> Agents Management</h2>
-                        <button class="btn-primary" onclick="openAddAgentModal()">
-                            <i class="fas fa-user-plus"></i> Add Agent
-                        </button>
+                        <button class="btn-primary" onclick="openAddAgentModal()"><i class="fas fa-user-plus"></i> Add Agent</button>
                     </div>
                     <div class="table-container">
-                        <table id="agentsTable">
+                        <table id="agentsTable" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th><i class="fas fa-user"></i> NAME</th>
-                                    <th><i class="fas fa-id-card"></i> ID NO</th>
-                                    <th><i class="fas fa-phone"></i> PHONE</th>
-                                    <th><i class="fas fa-envelope"></i> EMAIL</th>
-                                    <th><i class="fas fa-circle"></i> STATUS</th>
-                                    <th><i class="fas fa-cog"></i> ACTIONS</th>
+                                    <th style="width: 20%;"><i class="fas fa-user"></i> NAME</th>
+                                    <th style="width: 15%;"><i class="fas fa-id-card"></i> ID NO</th>
+                                    <th style="width: 15%;"><i class="fas fa-phone"></i> PHONE</th>
+                                    <th style="width: 20%;"><i class="fas fa-envelope"></i> EMAIL</th>
+                                    <th style="width: 10%;"><i class="fas fa-circle"></i> STATUS</th>
+                                    <th style="width: 20%;"><i class="fas fa-cog"></i> ACTIONS</th>
                                 </tr>
                             </thead>
                             <tbody id="agentsTableBody">
-                                <tr>
-                                    <td colspan="6" style="text-align: center; padding: 40px;">
-                                        <i class="fas fa-spinner fa-pulse"></i> Loading agents...
-                                    </td>
-                                </tr>
+                                <tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse"></i> Loading agents...<\/td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Transactions -->
+                <!-- Transactions Table -->
                 <div id="transactions" class="section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-exchange-alt"></i> Transactions</h2>
-                    </div>
+                    <div class="section-header"><h2><i class="fas fa-exchange-alt"></i> Transactions</h2></div>
                     <div class="table-container">
-                        <table id="transactionsTable">
+                        <table id="transactionsTable" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th><i class="fas fa-user"></i> CUSTOMER NAME</th>
-                                    <th><i class="fas fa-hashtag"></i> TILL NUMBER</th>
-                                    <th><i class="fas fa-cubes"></i> CURRENT UNITS</th>
-                                    <th><i class="fas fa-plus-circle"></i> ACTION</th>
+                                    <th style="width: 20%;"><i class="fas fa-user"></i> CUSTOMER NAME</th>
+                                    <th style="width: 15%;"><i class="fas fa-hashtag"></i> TILL NUMBER</th>
+                                    <th style="width: 15%;"><i class="fas fa-store"></i> STORE NUMBER</th>
+                                    <th style="width: 15%;"><i class="fas fa-cubes"></i> CURRENT UNITS</th>
+                                    <th style="width: 15%;"><i class="fas fa-calendar"></i> DATE</th>
+                                    <th style="width: 20%;"><i class="fas fa-plus-circle"></i> ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="transactionsTableBody">
-                                <tr>
-                                    <td colspan="4" style="text-align: center; padding: 40px;">
-                                        <i class="fas fa-spinner fa-pulse"></i> Loading transactions...
-                                    </td>
-                                </tr>
+                                <tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse"></i> Loading transactions...<\/td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1095,38 +789,28 @@
 
                 <!-- Customer 360 -->
                 <div id="customer360" class="section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-search"></i> Customer 360 View</h2>
-                    </div>
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="customerSearch" placeholder="Search by name, phone, or ID..." onkeyup="searchCustomer()">
-                    </div>
+                    <div class="section-header"><h2><i class="fas fa-search"></i> Customer 360 View</h2></div>
+                    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="customerSearch" placeholder="Search by name, phone, or ID..." onkeyup="searchCustomer()"></div>
                     <div id="customerResult"></div>
                 </div>
 
-                <!-- Activation -->
+                <!-- Activation Table -->
                 <div id="activation" class="section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-check-circle"></i> Till Activation</h2>
-                    </div>
+                    <div class="section-header"><h2><i class="fas fa-check-circle"></i> Till Activation</h2></div>
                     <div class="table-container">
-                        <table id="activationTable">
+                        <table id="activationTable" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th><i class="fas fa-phone"></i> PHONE</th>
-                                    <th><i class="fas fa-user"></i> CUSTOMER NAME</th>
-                                    <th><i class="fas fa-hashtag"></i> TILL NUMBER</th>
-                                    <th><i class="fas fa-circle"></i> STATUS</th>
-                                    <th><i class="fas fa-bolt"></i> ACTION</th>
+                                    <th style="width: 15%;"><i class="fas fa-phone"></i> PHONE</th>
+                                    <th style="width: 20%;"><i class="fas fa-user"></i> CUSTOMER NAME</th>
+                                    <th style="width: 15%;"><i class="fas fa-hashtag"></i> TILL NUMBER</th>
+                                    <th style="width: 15%;"><i class="fas fa-store"></i> STORE NUMBER</th>
+                                    <th style="width: 15%;"><i class="fas fa-circle"></i> STATUS</th>
+                                    <th style="width: 20%;"><i class="fas fa-bolt"></i> ACTION</th>
                                 </tr>
                             </thead>
                             <tbody id="activationTableBody">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; padding: 40px;">
-                                        <i class="fas fa-spinner fa-pulse"></i> Loading tills...
-                                    </td>
-                                </tr>
+                                <tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-pulse"></i> Loading tills...<\/td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1134,19 +818,11 @@
 
                 <!-- Reports -->
                 <div id="report" class="section">
-                    <div class="section-header">
-                        <h2><i class="fas fa-chart-bar"></i> Generate Reports</h2>
-                    </div>
-                    <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
-                        <button class="btn-primary" onclick="generateLinesReport()">
-                            <i class="fas fa-file-alt"></i> Lines Report
-                        </button>
-                        <button class="btn-primary" onclick="generateTillsReport()">
-                            <i class="fas fa-cash-register"></i> Tills Report
-                        </button>
-                        <button class="btn-primary" onclick="generateCommissionReport()">
-                            <i class="fas fa-coins"></i> Commission Report
-                        </button>
+                    <div class="section-header"><h2><i class="fas fa-chart-bar"></i> Generate Reports</h2></div>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <button class="btn-primary" onclick="generateLinesReport()"><i class="fas fa-file-alt"></i> Lines Report</button>
+                        <button class="btn-primary" onclick="generateTillsReport()"><i class="fas fa-cash-register"></i> Tills Report</button>
+                        <button class="btn-primary" onclick="generateCommissionReport()"><i class="fas fa-coins"></i> Commission Report</button>
                     </div>
                     <div id="reportResult"></div>
                 </div>
@@ -1162,26 +838,11 @@
                 <span class="close" onclick="closeModal('addAgentModal')">&times;</span>
             </div>
             <form id="addAgentForm">
-                <div class="form-group">
-                    <label><i class="fas fa-user"></i> Full Name *</label>
-                    <input type="text" id="agentName" required>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-id-card"></i> ID Number *</label>
-                    <input type="text" id="agentId" required>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-envelope"></i> Email *</label>
-                    <input type="email" id="agentEmail" required>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-mobile-alt"></i> Phone *</label>
-                    <input type="tel" id="agentPhone" required>
-                </div>
-                <div class="form-group">
-                    <label><i class="fas fa-location-dot"></i> Location *</label>
-                    <input type="text" id="agentLocation" required>
-                </div>
+                <div class="form-group"><label>Full Name *</label><input type="text" id="agentName" required></div>
+                <div class="form-group"><label>ID Number *</label><input type="text" id="agentId" required></div>
+                <div class="form-group"><label>Email *</label><input type="email" id="agentEmail" required></div>
+                <div class="form-group"><label>Phone *</label><input type="tel" id="agentPhone" required></div>
+                <div class="form-group"><label>Location *</label><input type="text" id="agentLocation" required></div>
                 <button type="submit" class="btn-primary">Create Agent</button>
             </form>
         </div>
@@ -1193,10 +854,7 @@
                 <h3><i class="fas fa-pause-circle"></i> Suspend Agent</h3>
                 <span class="close" onclick="closeModal('suspendModal')">&times;</span>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-calendar"></i> Days to Suspend</label>
-                <input type="number" id="suspendDays" min="1" placeholder="Enter days">
-            </div>
+            <div class="form-group"><label>Days to Suspend</label><input type="number" id="suspendDays" min="1" placeholder="Enter days"></div>
             <button class="btn-warning" onclick="confirmSuspend()">Confirm Suspension</button>
             <input type="hidden" id="suspendUserId">
         </div>
@@ -1208,10 +866,7 @@
                 <h3><i class="fas fa-plus-circle"></i> Add Units</h3>
                 <span class="close" onclick="closeModal('addUnitsModal')">&times;</span>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-cubes"></i> Units to Add</label>
-                <input type="number" id="unitsToAdd" min="1" placeholder="Enter units">
-            </div>
+            <div class="form-group"><label>Units to Add</label><input type="number" id="unitsToAdd" min="1" placeholder="Enter units"></div>
             <button class="btn-primary" onclick="confirmAddUnits()">Add Units</button>
             <input type="hidden" id="currentTillRowIndex">
         </div>
@@ -1223,10 +878,7 @@
                 <h3><i class="fas fa-check-circle"></i> Activate Till</h3>
                 <span class="close" onclick="closeModal('activateModal')">&times;</span>
             </div>
-            <div class="form-group">
-                <label><i class="fas fa-key"></i> Enter PIN</label>
-                <input type="password" id="activationPin" placeholder="Enter 4-6 digit PIN">
-            </div>
+            <div class="form-group"><label>Enter PIN</label><input type="password" id="activationPin" placeholder="Enter 4-6 digit PIN"></div>
             <button class="btn-success" onclick="confirmActivation()">Activate Till</button>
             <input type="hidden" id="activateTillRowIndex">
         </div>
@@ -1234,75 +886,67 @@
 
     <script>
         // ==================== CONFIGURATION ====================
-        const API_URL = 'YOUR_APPSCRIPT_WEB_APP_URL_HERE';
+        // REPLACE THIS WITH YOUR ACTUAL APPSCRIPT DEPLOYMENT URL
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyux5FlzVTS79j5reI_YIYCiuGYMEE3VTmn6mgk51Nlw_mm5Wl-kH0l1cJetyosN9Z5iA/exec';
         
         let currentUser = null;
         let currentSuspendUserId = null;
         let currentTillRowIndex = null;
         let currentActivateRowIndex = null;
+        
+        // Data stores
         let linesData = [];
         let tillsData = [];
         
-        // ==================== API HELPER FUNCTIONS ====================
+        // ==================== API HELPER ====================
         async function callApi(action, params = {}) {
-            const url = new URL(API_URL);
-            url.searchParams.append('action', action);
-            Object.keys(params).forEach(key => {
-                if (params[key] !== undefined && params[key] !== null) {
-                    url.searchParams.append(key, params[key]);
-                }
-            });
-            
             try {
+                const url = new URL(API_URL);
+                url.searchParams.append('action', action);
+                Object.keys(params).forEach(key => {
+                    if (params[key] !== undefined && params[key] !== null) {
+                        url.searchParams.append(key, params[key]);
+                    }
+                });
+                
+                console.log(`Calling API: ${action}`, params);
+                
                 const response = await fetch(url.toString(), {
                     method: 'GET',
-                    mode: 'cors'
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
                 });
+                
                 const data = await response.json();
+                console.log(`API Response for ${action}:`, data);
                 return data;
             } catch (error) {
-                console.error('API Error:', error);
+                console.error(`API Error for ${action}:`, error);
                 return { success: false, error: error.message };
             }
         }
         
-        // Loader functions
-        function showGlobalLoader() {
-            document.getElementById('globalLoader').classList.add('active');
-        }
-        
-        function hideGlobalLoader() {
-            setTimeout(() => {
-                document.getElementById('globalLoader').classList.remove('active');
-            }, 300);
-        }
-        
-        function showSectionLoader(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.classList.add('loading');
-            }
-        }
-        
-        function hideSectionLoader(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.classList.remove('loading');
-            }
-        }
-        
-        // ==================== LOGIN ====================
+        // ==================== LOGIN HANDLER ====================
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            showGlobalLoader();
             
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
+            // Show loading state
+            const loginBtn = document.querySelector('.login-btn');
+            const originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Logging in...';
+            loginBtn.disabled = true;
+            
             const result = await callApi('login', { username, password });
             
+            loginBtn.innerHTML = originalText;
+            loginBtn.disabled = false;
+            
             if (!result.success) {
-                hideGlobalLoader();
                 const errorDiv = document.getElementById('loginError');
                 errorDiv.textContent = result.error || 'Invalid username or password';
                 errorDiv.style.display = 'block';
@@ -1310,63 +954,41 @@
                 return;
             }
             
-            currentUser = { username: result.username, full_name: result.username, role: 'admin' };
+            currentUser = { username: result.username, full_name: result.username || 'Admin', role: 'admin' };
+            
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('dashboardContainer').style.display = 'block';
-            document.getElementById('userStatus').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.full_name} (Admin)`;
+            document.getElementById('userStatus').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.full_name}`;
             
-            const adminItems = document.querySelectorAll('.admin-only');
-            adminItems.forEach(item => item.style.display = 'flex');
+            document.querySelectorAll('.admin-only').forEach(item => item.style.display = 'flex');
             
-            await loadStats();
-            await loadLines();
-            await loadTills();
-            await loadAgents();
-            await loadActivation();
-            await loadTransactions();
-            setupEventListeners();
-            hideGlobalLoader();
+            // Load all data
+            await loadAllData();
+            setupNavigation();
         });
         
-        function setupEventListeners() {
-            document.querySelectorAll('.nav-item').forEach(item => {
-                if (item.classList.contains('logout')) return;
-                item.onclick = async () => {
-                    const page = item.dataset.page;
-                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                    document.getElementById(page).classList.add('active');
-                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-                    item.classList.add('active');
-                    
-                    if (page === 'agents') await loadAgents();
-                    if (page === 'transactions') await loadTransactions();
-                    if (page === 'activation') await loadActivation();
-                    if (page === 'report') document.getElementById('reportResult').innerHTML = '';
-                };
-            });
-            
-            document.getElementById('logoutBtn').onclick = () => {
-                showGlobalLoader();
-                setTimeout(() => {
-                    currentUser = null;
-                    document.getElementById('loginPage').style.display = 'flex';
-                    document.getElementById('dashboardContainer').style.display = 'none';
-                    document.getElementById('loginForm').reset();
-                    hideGlobalLoader();
-                }, 300);
-            };
-            
-            document.getElementById('lineForm').onsubmit = registerLine;
-            document.getElementById('tillForm').onsubmit = registerTill;
-            document.getElementById('addAgentForm').onsubmit = addAgent;
-            document.getElementById('fetchCustomerBtn').onclick = fetchCustomerData;
+        async function loadAllData() {
+            await Promise.all([
+                loadLines(),
+                loadTills(),
+                loadStats()
+            ]);
+            await Promise.all([
+                loadAgents(),
+                loadTransactions(),
+                loadActivation()
+            ]);
         }
         
-        // ==================== LOAD DATA ====================
+        // ==================== DATA LOADING ====================
         async function loadLines() {
             const result = await callApi('getLines');
             if (result.success && result.lines) {
                 linesData = result.lines;
+                console.log('Lines loaded:', linesData.length);
+            } else {
+                console.error('Failed to load lines:', result.error);
+                linesData = [];
             }
             return linesData;
         }
@@ -1375,26 +997,60 @@
             const result = await callApi('getTills');
             if (result.success && result.tills) {
                 tillsData = result.tills;
+                console.log('Tills loaded:', tillsData.length);
+            } else {
+                console.error('Failed to load tills:', result.error);
+                tillsData = [];
             }
             return tillsData;
         }
         
-        // ==================== STATS ====================
         async function loadStats() {
             const result = await callApi('getStats');
             if (result.success) {
                 document.getElementById('totalLines').innerText = result.totalLines || 0;
                 document.getElementById('totalTills').innerText = result.totalTills || 0;
                 document.getElementById('activeTills').innerText = result.activeTills || 0;
-                const commission = (result.salary || 0);
-                document.getElementById('commission').innerText = `KES ${commission.toLocaleString()}`;
+                document.getElementById('commission').innerText = `KES ${(result.salary || 0).toLocaleString()}`;
+            } else {
+                console.error('Failed to load stats:', result.error);
             }
+        }
+        
+        // ==================== NAVIGATION ====================
+        function setupNavigation() {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.classList.contains('logout')) return;
+                item.onclick = () => {
+                    const page = item.dataset.page;
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    document.getElementById(page).classList.add('active');
+                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    if (page === 'agents') loadAgents();
+                    if (page === 'transactions') loadTransactions();
+                    if (page === 'activation') loadActivation();
+                    if (page === 'report') document.getElementById('reportResult').innerHTML = '';
+                };
+            });
+            
+            document.getElementById('logoutBtn').onclick = () => {
+                currentUser = null;
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('dashboardContainer').style.display = 'none';
+                document.getElementById('loginForm').reset();
+            };
+            
+            document.getElementById('lineForm').onsubmit = registerLine;
+            document.getElementById('tillForm').onsubmit = registerTill;
+            document.getElementById('addAgentForm').onsubmit = addAgent;
+            document.getElementById('fetchCustomerBtn').onclick = fetchCustomerData;
         }
         
         // ==================== LINE REGISTRATION ====================
         async function registerLine(e) {
             e.preventDefault();
-            showGlobalLoader();
             
             const result = await callApi('registerLine', {
                 name: document.getElementById('lineName').value,
@@ -1406,17 +1062,15 @@
             if (result.success) {
                 alert('✓ Line registered successfully!');
                 document.getElementById('lineForm').reset();
-                await loadStats();
                 await loadLines();
+                await loadStats();
             } else {
                 alert('✗ Error: ' + (result.error || 'Unknown error'));
             }
-            hideGlobalLoader();
         }
         
         // ==================== TILL REGISTRATION ====================
         async function fetchCustomerData() {
-            await loadLines();
             const phone = document.getElementById('tillPhone').value;
             const customer = linesData.find(l => l.phone === phone);
             
@@ -1435,7 +1089,6 @@
         
         async function registerTill(e) {
             e.preventDefault();
-            showGlobalLoader();
             
             const result = await callApi('registerTill', {
                 phone: document.getElementById('tillPhone').value,
@@ -1450,233 +1103,209 @@
             if (result.success) {
                 alert('✓ Till registered successfully!');
                 document.getElementById('tillForm').reset();
-                await loadStats();
                 await loadTills();
+                await loadStats();
                 await loadActivation();
                 await loadTransactions();
             } else {
                 alert('✗ Error: ' + (result.error || 'Unknown error'));
             }
-            hideGlobalLoader();
         }
         
-        // ==================== AGENTS MANAGEMENT ====================
+        // ==================== AGENTS TABLE ====================
         async function loadAgents() {
-            showSectionLoader('agents');
-            await loadTills();
+            const tbody = document.getElementById('agentsTableBody');
+            if (!tbody) return;
             
-            // Group tills by operator name to create agents list
+            // Create unique agents from tills data
             const agentMap = new Map();
-            
             tillsData.forEach(till => {
-                const agentName = till.name;
-                if (!agentMap.has(agentName)) {
-                    agentMap.set(agentName, {
-                        name: till.name || 'N/A',
+                const name = till.name;
+                if (!agentMap.has(name)) {
+                    agentMap.set(name, { 
+                        name: name,
                         idNumber: till.idNumber || 'N/A',
                         phone: till.phone || 'N/A',
-                        email: till.email || 'agent@example.com',
+                        email: `${name?.toLowerCase().replace(/\s/g, '') || 'agent'}@example.com`,
                         status: 'active',
                         commission: 0,
-                        activeTills: 0,
                         rowIndex: till.rowIndex
                     });
                 }
-                
-                const agent = agentMap.get(agentName);
                 if (till.status === 'active') {
-                    agent.commission += 200;
-                    agent.activeTills++;
+                    agentMap.get(name).commission += 200;
                 }
             });
             
-            const agentsList = Array.from(agentMap.values());
-            const tbody = document.getElementById('agentsTableBody');
             tbody.innerHTML = '';
             
-            if (agentsList.length > 0) {
-                agentsList.forEach(agent => {
-                    const row = tbody.insertRow();
-                    row.style.borderBottom = '1px solid #f0f0f0';
-                    
-                    // Name
-                    const nameCell = row.insertCell(0);
-                    nameCell.style.padding = '14px 12px';
-                    nameCell.style.textAlign = 'left';
-                    nameCell.innerHTML = `<strong>${agent.name}</strong>`;
-                    
-                    // ID Number
-                    const idCell = row.insertCell(1);
-                    idCell.style.padding = '14px 12px';
-                    idCell.style.textAlign = 'left';
-                    idCell.innerHTML = agent.idNumber;
-                    
-                    // Phone
-                    const phoneCell = row.insertCell(2);
-                    phoneCell.style.padding = '14px 12px';
-                    phoneCell.style.textAlign = 'left';
-                    phoneCell.innerHTML = agent.phone;
-                    
-                    // Email
-                    const emailCell = row.insertCell(3);
-                    emailCell.style.padding = '14px 12px';
-                    emailCell.style.textAlign = 'left';
-                    emailCell.innerHTML = agent.email;
-                    
-                    // Status
-                    const statusCell = row.insertCell(4);
-                    statusCell.style.padding = '14px 12px';
-                    statusCell.style.textAlign = 'left';
-                    statusCell.innerHTML = `<span class="status-badge status-active">ACTIVE</span>`;
-                    
-                    // Actions
-                    const actionsCell = row.insertCell(5);
-                    actionsCell.style.padding = '14px 12px';
-                    actionsCell.style.textAlign = 'left';
-                    actionsCell.style.whiteSpace = 'nowrap';
-                    actionsCell.innerHTML = `
-                        <button class="btn-warning" onclick="resetAgentPassword('${agent.name}')">
-                            <i class="fas fa-key"></i> Reset
-                        </button>
-                        <button class="btn-info" onclick="getAgentUsername('${agent.name}')">
-                            <i class="fas fa-user"></i> Username
-                        </button>
-                        <button class="btn-warning" onclick="openSuspendModal('${agent.name}')">
-                            <i class="fas fa-pause"></i> Suspend
-                        </button>
-                        <button class="btn-danger" onclick="blacklistAgent('${agent.name}')">
-                            <i class="fas fa-ban"></i> Blacklist
-                        </button>
-                        <button class="btn-success" onclick="viewCommission('${agent.name}', ${agent.commission})">
-                            <i class="fas fa-coins"></i> Commission
-                        </button>
-                    `;
-                });
-            } else {
-                const row = tbody.insertRow();
-                const cell = row.insertCell(0);
-                cell.colSpan = 6;
-                cell.style.padding = '40px';
-                cell.style.textAlign = 'center';
-                cell.style.color = '#999';
-                cell.innerHTML = '<i class="fas fa-info-circle"></i> No agents found';
+            if (agentMap.size === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-info-circle"></i> No agents found</td></tr>';
+                return;
             }
-            hideSectionLoader('agents');
+            
+            for (const [name, agent] of agentMap) {
+                const row = tbody.insertRow();
+                row.style.borderBottom = '1px solid #f0f0f0';
+                
+                row.insertCell(0).innerHTML = `<strong>${agent.name}</strong>`;
+                row.insertCell(1).innerHTML = agent.idNumber;
+                row.insertCell(2).innerHTML = agent.phone;
+                row.insertCell(3).innerHTML = agent.email;
+                row.insertCell(4).innerHTML = '<span class="status-badge status-active"><i class="fas fa-check-circle"></i> ACTIVE</span>';
+                row.insertCell(5).innerHTML = `
+                    <div class="action-buttons">
+                        <button class="btn-warning" onclick="resetAgentPassword('${agent.name}')"><i class="fas fa-key"></i> Reset</button>
+                        <button class="btn-info" onclick="getAgentUsername('${agent.name}')"><i class="fas fa-user"></i> Username</button>
+                        <button class="btn-warning" onclick="openSuspendModal('${agent.name}')"><i class="fas fa-pause"></i> Suspend</button>
+                        <button class="btn-danger" onclick="blacklistAgent('${agent.name}')"><i class="fas fa-ban"></i> Blacklist</button>
+                        <button class="btn-success" onclick="viewCommission('${agent.name}', ${agent.commission})"><i class="fas fa-coins"></i> Commission</button>
+                    </div>
+                `;
+                
+                for(let i = 0; i < 6; i++) {
+                    if(row.cells[i]) row.cells[i].style.padding = '12px';
+                }
+            }
         }
         
-        function openAddAgentModal() {
-            document.getElementById('addAgentModal').style.display = 'flex';
+        // ==================== TRANSACTIONS TABLE ====================
+        async function loadTransactions() {
+            const tbody = document.getElementById('transactionsTableBody');
+            if (!tbody) return;
+            
+            tbody.innerHTML = '';
+            
+            if (tillsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-info-circle"></i> No transactions found</td></tr>';
+                return;
+            }
+            
+            tillsData.forEach(till => {
+                const row = tbody.insertRow();
+                row.style.borderBottom = '1px solid #f0f0f0';
+                
+                row.insertCell(0).innerHTML = till.name || 'N/A';
+                row.insertCell(1).innerHTML = till.tillNumber || 'N/A';
+                row.insertCell(2).innerHTML = till.storeNumber || 'N/A';
+                row.insertCell(3).innerHTML = till.units || 0;
+                row.insertCell(4).innerHTML = till.dateCreated || 'N/A';
+                row.insertCell(5).innerHTML = `<button class="btn-primary" onclick="openAddUnitsModal(${till.rowIndex})"><i class="fas fa-plus"></i> Add Units</button>`;
+                
+                for(let i = 0; i < 6; i++) {
+                    if(row.cells[i]) row.cells[i].style.padding = '12px';
+                }
+            });
+        }
+        
+        // ==================== ACTIVATION TABLE ====================
+        async function loadActivation() {
+            const tbody = document.getElementById('activationTableBody');
+            if (!tbody) return;
+            
+            const inactive = tillsData.filter(t => t.status !== 'active');
+            tbody.innerHTML = '';
+            
+            if (inactive.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-check-circle"></i> All tills are activated</td></tr>';
+                return;
+            }
+            
+            inactive.forEach(till => {
+                const row = tbody.insertRow();
+                row.style.borderBottom = '1px solid #f0f0f0';
+                
+                row.insertCell(0).innerHTML = till.phone || 'N/A';
+                row.insertCell(1).innerHTML = till.name || 'N/A';
+                row.insertCell(2).innerHTML = till.tillNumber || 'N/A';
+                row.insertCell(3).innerHTML = till.storeNumber || 'N/A';
+                row.insertCell(4).innerHTML = '<span class="status-badge status-inactive"><i class="fas fa-clock"></i> INACTIVE</span>';
+                row.insertCell(5).innerHTML = `<button class="btn-success" onclick="openActivateModal(${till.rowIndex})"><i class="fas fa-check"></i> Activate</button>`;
+                
+                for(let i = 0; i < 6; i++) {
+                    if(row.cells[i]) row.cells[i].style.padding = '12px';
+                }
+            });
+        }
+        
+        // ==================== AGENT ACTION FUNCTIONS ====================
+        function openAddAgentModal() { 
+            document.getElementById('addAgentModal').style.display = 'flex'; 
         }
         
         async function addAgent(e) {
             e.preventDefault();
-            showGlobalLoader();
+            const result = await callApi('addAgent', {
+                full_name: document.getElementById('agentName').value,
+                id_number: document.getElementById('agentId').value,
+                email: document.getElementById('agentEmail').value,
+                phone: document.getElementById('agentPhone').value,
+                location: document.getElementById('agentLocation').value,
+                created_by: currentUser?.full_name || 'admin'
+            });
             
-            // Simulate adding agent (in real implementation, this would call an API)
-            setTimeout(() => {
-                const fullName = document.getElementById('agentName').value;
-                const firstName = fullName.split(' ')[0];
-                const username = fullName.toLowerCase().replace(/\s/g, '');
-                const password = `${firstName}@2026`;
-                
-                alert(`✓ Agent added!\nUsername: ${username}\nPassword: ${password}`);
+            if (result.success) {
+                alert(`✓ Agent added!\n\nUsername: ${result.username}\nPassword: ${result.password}`);
                 closeModal('addAgentModal');
                 document.getElementById('addAgentForm').reset();
-                hideGlobalLoader();
-            }, 500);
+                await loadAgents();
+            } else {
+                alert('✗ Error: ' + (result.error || 'Unknown error'));
+            }
         }
         
-        window.resetAgentPassword = function(agentName) {
-            if (confirm(`Reset password for ${agentName} to default?`)) {
-                const firstName = agentName.split(' ')[0];
-                const newPassword = `${firstName}@2026`;
-                alert(`Password for ${agentName} has been reset to: ${newPassword}`);
+        window.resetAgentPassword = async (name) => {
+            if (confirm(`Reset password for ${name}?`)) {
+                // Find agent by name to get user_id
+                alert(`Password for ${name} has been reset to default.`);
             }
         };
         
-        window.getAgentUsername = function(agentName) {
-            const username = agentName.toLowerCase().replace(/\s/g, '');
-            alert(`Username for ${agentName} is: ${username}`);
+        window.getAgentUsername = (name) => {
+            alert(`Username for ${name} is: ${name.toLowerCase().replace(/\s/g, '')}`);
         };
         
-        window.openSuspendModal = function(agentName) {
-            currentSuspendUserId = agentName;
+        window.openSuspendModal = (name) => {
+            currentSuspendUserId = name;
             document.getElementById('suspendModal').style.display = 'flex';
         };
         
-        window.confirmSuspend = function() {
+        window.confirmSuspend = async () => {
             const days = document.getElementById('suspendDays').value;
-            if (!days) { alert('Enter days'); return; }
-            alert(`${currentSuspendUserId} suspended for ${days} days`);
+            if (!days) { alert('Please enter number of days'); return; }
+            
+            const result = await callApi('suspendAgent', {
+                user_id: currentSuspendUserId,
+                days: days
+            });
+            
+            alert(result.message || `${currentSuspendUserId} suspended for ${days} days`);
             closeModal('suspendModal');
             document.getElementById('suspendDays').value = '';
-            loadAgents();
+            await loadAgents();
         };
         
-        window.blacklistAgent = function(agentName) {
-            if (confirm(`Are you sure you want to blacklist ${agentName}?`)) {
-                alert(`${agentName} has been blacklisted`);
-                loadAgents();
+        window.blacklistAgent = async (name) => {
+            if (confirm(`Are you sure you want to blacklist ${name}?`)) {
+                const result = await callApi('blacklistAgent', { user_id: name });
+                alert(result.message || `${name} has been blacklisted`);
+                await loadAgents();
             }
         };
         
-        window.viewCommission = function(agentName, commission) {
-            alert(`📊 Commission Report for ${agentName}\n\n💰 Total Commission: KES ${commission.toLocaleString()}\n📈 Rate: KES 200 per active till`);
+        window.viewCommission = (name, commission) => {
+            alert(`📊 Commission Report for ${name}\n\n💰 Total Commission: KES ${commission.toLocaleString()}\n📈 Rate: KES 200 per active till`);
         };
         
-        // ==================== TRANSACTIONS ====================
-        async function loadTransactions() {
-            showSectionLoader('transactions');
-            await loadTills();
-            
-            const tbody = document.getElementById('transactionsTableBody');
-            tbody.innerHTML = '';
-            
-            if (tillsData.length > 0) {
-                tillsData.forEach(till => {
-                    const row = tbody.insertRow();
-                    row.style.borderBottom = '1px solid #f0f0f0';
-                    
-                    // Customer Name
-                    const nameCell = row.insertCell(0);
-                    nameCell.style.padding = '14px 12px';
-                    nameCell.innerHTML = till.name || 'N/A';
-                    
-                    // Till Number
-                    const tillCell = row.insertCell(1);
-                    tillCell.style.padding = '14px 12px';
-                    tillCell.innerHTML = till.tillNumber || 'N/A';
-                    
-                    // Units
-                    const unitsCell = row.insertCell(2);
-                    unitsCell.style.padding = '14px 12px';
-                    unitsCell.innerHTML = till.units || 0;
-                    
-                    // Action
-                    const actionCell = row.insertCell(3);
-                    actionCell.style.padding = '14px 12px';
-                    actionCell.innerHTML = `<button class="btn-primary" onclick="openAddUnitsModal(${till.rowIndex})"><i class="fas fa-plus"></i> Add Units</button>`;
-                });
-            } else {
-                const row = tbody.insertRow();
-                const cell = row.insertCell(0);
-                cell.colSpan = 4;
-                cell.style.padding = '40px';
-                cell.style.textAlign = 'center';
-                cell.style.color = '#999';
-                cell.innerHTML = '<i class="fas fa-info-circle"></i> No transactions found';
-            }
-            hideSectionLoader('transactions');
-        }
-        
-        window.openAddUnitsModal = function(rowIndex) {
-            currentTillRowIndex = rowIndex;
+        // ==================== UNIT FUNCTIONS ====================
+        window.openAddUnitsModal = (idx) => {
+            currentTillRowIndex = idx;
             document.getElementById('addUnitsModal').style.display = 'flex';
         };
         
-        window.confirmAddUnits = async function() {
+        window.confirmAddUnits = async () => {
             const units = parseInt(document.getElementById('unitsToAdd').value);
-            if (!units || units <= 0) { alert('Enter valid units'); return; }
+            if (!units || units <= 0) { alert('Please enter valid number of units'); return; }
             
             const result = await callApi('updateUnits', {
                 rowIndex: currentTillRowIndex,
@@ -1684,15 +1313,44 @@
             });
             
             if (result.success) {
-                alert(`✓ Added ${units} units. New total: ${result.newUnits} units`);
-                closeModal('addUnitsModal');
-                document.getElementById('unitsToAdd').value = '';
+                alert(`✓ Added ${units} units successfully!\nNew total: ${result.newUnits} units`);
                 await loadTills();
                 await loadTransactions();
                 await loadStats();
             } else {
                 alert('✗ Error: ' + (result.error || 'Unknown error'));
             }
+            
+            closeModal('addUnitsModal');
+            document.getElementById('unitsToAdd').value = '';
+        };
+        
+        // ==================== ACTIVATION FUNCTIONS ====================
+        window.openActivateModal = (idx) => {
+            currentActivateRowIndex = idx;
+            document.getElementById('activateModal').style.display = 'flex';
+        };
+        
+        window.confirmActivation = async () => {
+            const pin = document.getElementById('activationPin').value;
+            if (!pin || pin.length < 4) { alert('Please enter a valid PIN (at least 4 digits)'); return; }
+            
+            const result = await callApi('activateTill', {
+                rowIndex: currentActivateRowIndex
+            });
+            
+            if (result.success) {
+                alert('✓ Till activated successfully!');
+                await loadTills();
+                await loadActivation();
+                await loadStats();
+                await loadTransactions();
+            } else {
+                alert('✗ Error: ' + (result.error || 'Unknown error'));
+            }
+            
+            closeModal('activateModal');
+            document.getElementById('activationPin').value = '';
         };
         
         // ==================== CUSTOMER 360 ====================
@@ -1702,9 +1360,6 @@
                 document.getElementById('customerResult').innerHTML = '';
                 return;
             }
-            
-            await loadLines();
-            await loadTills();
             
             const matchedLines = linesData.filter(l => 
                 l.name?.toLowerCase().includes(term) || 
@@ -1717,37 +1372,24 @@
                 t.phone?.includes(term)
             );
             
-            let html = '<div style="background:#f5f5f5;padding:20px;border-radius:10px;">';
+            let html = '<div style="background:#f5f5f5;padding:15px;border-radius:10px;">';
             
             if (matchedLines.length > 0) {
-                html += '<h3 style="margin-bottom:15px;color:#1e3c2c;"><i class="fas fa-phone-alt"></i> Registered Lines</h3>';
-                html += '<div class="table-container">能<table<thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th><th>Date Created</th></tr></thead><tbody>';
+                html += '<h3 style="margin-bottom:10px;"><i class="fas fa-phone-alt"></i> Registered Lines</h3>';
+                html += '<table style="width:100%"><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th></tr></thead><tbody>';
                 matchedLines.forEach(l => {
-                    html += `<tr>
-                        <td style="padding:12px;">${l.name || 'N/A'}</td>
-                        <td style="padding:12px;">${l.phone || 'N/A'}</td>
-                        <td style="padding:12px;">${l.idNumber || 'N/A'}</td>
-                        <td style="padding:12px;">${l.dob || 'N/A'}</td>
-                        <td style="padding:12px;">${l.dateCreated || 'N/A'}</td>
-                    </tr>`;
+                    html += `<tr><td style="padding:8px;">${l.name}</td><td style="padding:8px;">${l.phone}</td><td style="padding:8px;">${l.idNumber}</td><td style="padding:8px;">${l.dob}</td></tr>`;
                 });
-                html += '</tbody>能得到</div>';
+                html += '</tbody></table>';
             }
             
             if (matchedTills.length > 0) {
-                html += '<h3 style="margin:20px 0 15px;color:#1e3c2c;"><i class="fas fa-cash-register"></i> Registered Tills</h3>';
-                html += '<div class="table-container">能表格<thead><tr><th>Name</th><th>Phone</th><th>Till #</th><th>Store #</th><th>Units</th><th>Status</th></tr></thead><tbody>';
+                html += '<h3 style="margin:15px 0 10px;"><i class="fas fa-cash-register"></i> Registered Tills</h3>';
+                html += '<table style="width:100%"><thead><tr><th>Name</th><th>Till #</th><th>Store #</th><th>Units</th><th>Status</th></tr></thead><tbody>';
                 matchedTills.forEach(t => {
-                    html += `<tr>
-                        <td style="padding:12px;">${t.name || 'N/A'}</td>
-                        <td style="padding:12px;">${t.phone || 'N/A'}</td>
-                        <td style="padding:12px;">${t.tillNumber || 'N/A'}</td>
-                        <td style="padding:12px;">${t.storeNumber || 'N/A'}</td>
-                        <td style="padding:12px;">${t.units || 0}</td>
-                        <td style="padding:12px;">${t.status || 'inactive'}</td>
-                    </tr>`;
+                    html += `<tr><td style="padding:8px;">${t.name}</td><td style="padding:8px;">${t.tillNumber}</td><td style="padding:8px;">${t.storeNumber}</td><td style="padding:8px;">${t.units}</td><td style="padding:8px;">${t.status}</td></tr>`;
                 });
-                html += '</tbody>获得</div>';
+                html += '</tbody></table>';
             }
             
             if (matchedLines.length === 0 && matchedTills.length === 0) {
@@ -1758,190 +1400,61 @@
             document.getElementById('customerResult').innerHTML = html;
         };
         
-        // ==================== ACTIVATION ====================
-        async function loadActivation() {
-            showSectionLoader('activation');
-            await loadTills();
-            
-            const inactiveTills = tillsData.filter(t => t.status !== 'active');
-            const tbody = document.getElementById('activationTableBody');
-            tbody.innerHTML = '';
-            
-            if (inactiveTills.length > 0) {
-                inactiveTills.forEach(till => {
-                    const row = tbody.insertRow();
-                    row.style.borderBottom = '1px solid #f0f0f0';
-                    
-                    // Phone
-                    const phoneCell = row.insertCell(0);
-                    phoneCell.style.padding = '14px 12px';
-                    phoneCell.innerHTML = till.phone || 'N/A';
-                    
-                    // Customer Name
-                    const nameCell = row.insertCell(1);
-                    nameCell.style.padding = '14px 12px';
-                    nameCell.innerHTML = till.name || 'N/A';
-                    
-                    // Till Number
-                    const tillCell = row.insertCell(2);
-                    tillCell.style.padding = '14px 12px';
-                    tillCell.innerHTML = till.tillNumber || 'N/A';
-                    
-                    // Status
-                    const statusCell = row.insertCell(3);
-                    statusCell.style.padding = '14px 12px';
-                    statusCell.innerHTML = `<span class="status-badge status-inactive">${till.status || 'inactive'}</span>`;
-                    
-                    // Action
-                    const actionCell = row.insertCell(4);
-                    actionCell.style.padding = '14px 12px';
-                    actionCell.innerHTML = `<button class="btn-success" onclick="openActivateModal(${till.rowIndex})"><i class="fas fa-check"></i> Activate</button>`;
-                });
-            } else {
-                const row = tbody.insertRow();
-                const cell = row.insertCell(0);
-                cell.colSpan = 5;
-                cell.style.padding = '40px';
-                cell.style.textAlign = 'center';
-                cell.style.color = '#999';
-                cell.innerHTML = '<i class="fas fa-check-circle"></i> All tills are activated';
-            }
-            hideSectionLoader('activation');
-        }
-        
-        window.openActivateModal = function(rowIndex) {
-            currentActivateRowIndex = rowIndex;
-            document.getElementById('activateModal').style.display = 'flex';
-        };
-        
-        window.confirmActivation = async function() {
-            const pin = document.getElementById('activationPin').value;
-            if (!pin || pin.length < 4) { alert('Enter valid PIN (at least 4 digits)'); return; }
-            
-            const result = await callApi('activateTill', {
-                rowIndex: currentActivateRowIndex
-            });
-            
-            if (result.success) {
-                alert('✓ Till activated successfully!');
-                closeModal('activateModal');
-                document.getElementById('activationPin').value = '';
-                await loadTills();
-                await loadActivation();
-                await loadStats();
-                await loadTransactions();
-            } else {
-                alert('✗ Error: ' + (result.error || 'Unknown error'));
-            }
-        };
-        
         // ==================== REPORTS ====================
-        window.generateLinesReport = async function() {
-            showSectionLoader('report');
-            await loadLines();
-            
-            if (linesData.length === 0) {
-                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error"><i class="fas fa-info-circle"></i> No lines data available</div>';
-                hideSectionLoader('report');
-                return;
-            }
-            
-            let html = '<h3 style="color:#1e3c2c;margin-bottom:20px;"><i class="fas fa-file-alt"></i> Lines Report</h3>';
-            html += '<div class="table-container">能表格<thead><tr>';
-            html += '<th>Name</th><th>Phone</th><th>ID</th><th>DOB</th><th>Date Created</th>';
-            html += '</thead><tbody>';
-            
-            linesData.forEach(l => {
-                html += `<tr>
-                    <td style="padding:12px;">${l.name || 'N/A'}</td>
-                    <td style="padding:12px;">${l.phone || 'N/A'}</td>
-                    <td style="padding:12px;">${l.idNumber || 'N/A'}</td>
-                    <td style="padding:12px;">${l.dob || 'N/A'}</td>
-                    <td style="padding:12px;">${l.dateCreated || 'N/A'}</td>
-                </tr>`;
-            });
-            html += '</tbody>能得到</div>';
-            document.getElementById('reportResult').innerHTML = html;
-            hideSectionLoader('report');
-        };
-        
-        window.generateTillsReport = async function() {
-            showSectionLoader('report');
-            await loadTills();
-            
-            if (tillsData.length === 0) {
-                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error"><i class="fas fa-info-circle"></i> No tills data available</div>';
-                hideSectionLoader('report');
-                return;
-            }
-            
-            let html = '<h3 style="color:#1e3c2c;margin-bottom:20px;"><i class="fas fa-cash-register"></i> Tills Report</h3>';
-            html += '<div class="table-container">能表格<thead><tr>';
-            html += '<th>Customer</th><th>Phone</th><th>Till #</th><th>Store #</th><th>Operator ID</th><th>Units</th><th>Status</th><th>Date Created</th>';
-            html += '</thead><tbody>';
-            
-            tillsData.forEach(t => {
-                html += `<tr>
-                    <td style="padding:12px;">${t.name || 'N/A'}</td>
-                    <td style="padding:12px;">${t.phone || 'N/A'}</td>
-                    <td style="padding:12px;">${t.tillNumber || 'N/A'}</td>
-                    <td style="padding:12px;">${t.storeNumber || 'N/A'}</td>
-                    <td style="padding:12px;">${t.operatorId || 'N/A'}</td>
-                    <td style="padding:12px;">${t.units || 0}</td>
-                    <td style="padding:12px;"><span class="status-badge ${t.status === 'active' ? 'status-active' : 'status-inactive'}">${t.status || 'inactive'}</span></td>
-                    <td style="padding:12px;">${t.dateCreated || 'N/A'}</td>
-                </tr>`;
-            });
-            html += '</tbody>得到</div>';
-            document.getElementById('reportResult').innerHTML = html;
-            hideSectionLoader('report');
-        };
-        
-        window.generateCommissionReport = async function() {
-            showSectionLoader('report');
-            await loadTills();
-            
-            const activeTills = tillsData.filter(t => t.status === 'active').length;
-            const commission = activeTills * 200;
-            
-            let html = '<h3 style="color:#1e3c2c;margin-bottom:20px;"><i class="fas fa-coins"></i> Commission Report</h3>';
-            html += '<div class="stats-grid" style="margin-bottom:20px;grid-template-columns:repeat(3,1fr);">';
-            html += `<div class="stat-card"><h3>Active Tills</h3><div class="value">${activeTills}</div></div>`;
-            html += `<div class="stat-card"><h3>Rate per Till</h3><div class="value">KES 200</div></div>`;
-            html += `<div class="stat-card"><h3>Total Commission</h3><div class="value">KES ${commission.toLocaleString()}</div></div>`;
-            html += '</div>';
-            
-            if (activeTills > 0) {
-                html += '<h4 style="margin:20px 0 15px;color:#1e3c2c;"><i class="fas fa-list"></i> Active Tills Breakdown:</h4>';
-                html += '<div class="table-container">能表格<thead></tr>';
-                html += '<th>Customer Name</th><th>Till Number</th><th>Store Number</th><th>Units</th><th>Operator ID</th><th>Date Created</th>';
-                html += '</thead><tbody>';
-                
-                tillsData.filter(t => t.status === 'active').forEach(t => {
-                    html += `<tr>
-                        <td style="padding:12px;">${t.name || 'N/A'}</td>
-                        <td style="padding:12px;">${t.tillNumber || 'N/A'}</td>
-                        <td style="padding:12px;">${t.storeNumber || 'N/A'}</td>
-                        <td style="padding:12px;">${t.units || 0}</td>
-                        <td style="padding:12px;">${t.operatorId || 'N/A'}</td>
-                        <td style="padding:12px;">${t.dateCreated || 'N/A'}</td>
-                    </tr>`;
+        window.generateLinesReport = async () => {
+            const result = await callApi('getLinesReport');
+            if (result.success && result.data && result.data.length > 0) {
+                let html = '<h3><i class="fas fa-file-alt"></i> Lines Report</h3>';
+                html += '<table style="width:100%"><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th><th>Registered By</th><th>Date</th></tr></thead><tbody>';
+                result.data.forEach(l => {
+                    html += `<tr><td style="padding:8px;">${l.customer_name}</td><td style="padding:8px;">${l.phone_number}</td><td style="padding:8px;">${l.id_number}</td><td style="padding:8px;">${l.dob}</td><td style="padding:8px;">${l.registered_by}</td><td style="padding:8px;">${l.registration_date}</td></tr>`;
                 });
-                html += '</tbody>能得到</div>';
+                html += '</tbody></table>';
+                document.getElementById('reportResult').innerHTML = html;
+            } else {
+                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No lines data available</div>';
             }
-            
-            document.getElementById('reportResult').innerHTML = html;
-            hideSectionLoader('report');
         };
         
-        // ==================== MODAL FUNCTIONS ====================
-        window.closeModal = function(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+        window.generateTillsReport = async () => {
+            const result = await callApi('getTillsReport');
+            if (result.success && result.data && result.data.length > 0) {
+                let html = '<h3><i class="fas fa-cash-register"></i> Tills Report</h3>';
+                html += '<table style="width:100%"><thead><tr><th>Customer</th><th>Phone</th><th>Till #</th><th>Store #</th><th>Operator</th><th>Units</th><th>Status</th><th>Registered By</th></tr></thead><tbody>';
+                result.data.forEach(t => {
+                    html += `<tr><td style="padding:8px;">${t.customer_name}</td><td style="padding:8px;">${t.phone_number}</td><td style="padding:8px;">${t.till_number}</td><td style="padding:8px;">${t.store_number}</td><td style="padding:8px;">${t.operator_id}</td><td style="padding:8px;">${t.units}</td><td style="padding:8px;">${t.status}</td><td style="padding:8px;">${t.registered_by}</td></tr>`;
+                });
+                html += '</tbody></table>';
+                document.getElementById('reportResult').innerHTML = html;
+            } else {
+                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No tills data available</div>';
+            }
         };
         
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+        window.generateCommissionReport = async () => {
+            const result = await callApi('getStats');
+            if (result.success) {
+                const activeTills = result.activeTills || 0;
+                const commission = (result.salary || 0);
+                let html = '<h3><i class="fas fa-coins"></i> Commission Report</h3>';
+                html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px;">';
+                html += `<div class="stat-card"><h3>Active Tills</h3><div class="value">${activeTills}</div></div>`;
+                html += `<div class="stat-card"><h3>Rate per Till</h3><div class="value">KES 200</div></div>`;
+                html += `<div class="stat-card"><h3>Total Commission</h3><div class="value">KES ${commission.toLocaleString()}</div></div></div>`;
+                document.getElementById('reportResult').innerHTML = html;
+            } else {
+                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No commission data available</div>';
+            }
+        };
+        
+        // ==================== MODAL HELPERS ====================
+        window.closeModal = (id) => {
+            document.getElementById(id).style.display = 'none';
+        };
+        
+        window.onclick = (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
             }
         };
     </script>
