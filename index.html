@@ -17,6 +17,12 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #0f2b1d 0%, #1a4a2a 100%);
             min-height: 100vh;
+            animation: bodyFadeIn 0.6s ease-out;
+        }
+
+        @keyframes bodyFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Login Page */
@@ -26,6 +32,23 @@
             align-items: center;
             min-height: 100vh;
             background: linear-gradient(135deg, #0f2b1d 0%, #1a4a2a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            animation: floatBackground 20s linear infinite;
+        }
+
+        @keyframes floatBackground {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
         }
 
         .login-box {
@@ -34,17 +57,29 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
             width: 420px;
             padding: 45px;
-            animation: slideUp 0.4s ease-out;
+            animation: slideUp 0.5s ease-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.3);
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .login-logo {
             text-align: center;
             margin-bottom: 25px;
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .login-logo i {
@@ -71,6 +106,15 @@
 
         .input-group {
             margin-bottom: 20px;
+            animation: fadeInLeft 0.4s ease-out;
+        }
+
+        .input-group:nth-child(1) { animation-delay: 0.1s; }
+        .input-group:nth-child(2) { animation-delay: 0.2s; }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .input-group label {
@@ -87,12 +131,14 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 14px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .input-group input:focus {
             outline: none;
             border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+            transform: scale(1.02);
         }
 
         .login-btn {
@@ -105,12 +151,41 @@
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.4s ease-out;
+            animation-delay: 0.3s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .login-btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .login-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(46, 125, 50, 0.4);
         }
 
         .error-message {
@@ -121,6 +196,13 @@
             margin-bottom: 15px;
             text-align: center;
             font-size: 13px;
+            animation: shakeError 0.5s ease-out;
+        }
+
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
 
         /* Dashboard Styles */
@@ -143,17 +225,29 @@
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            animation: slideInLeft 0.5s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-100%); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .sidebar-header {
             padding: 25px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             text-align: center;
+            animation: fadeIn 0.6s ease-out;
         }
 
         .sidebar-header h2 {
             font-size: 20px;
             margin-bottom: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header h2:hover {
+            transform: scale(1.05);
         }
 
         .sidebar-header h2 i {
@@ -167,6 +261,12 @@
             padding: 5px 10px;
             border-radius: 20px;
             display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .user-status:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
         }
 
         .nav-menu {
@@ -179,26 +279,54 @@
             margin: 3px 0;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 10px;
             font-weight: 500;
             font-size: 13px;
+            animation: fadeInRight 0.4s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .nav-item:nth-child(1) { animation-delay: 0.05s; }
+        .nav-item:nth-child(2) { animation-delay: 0.1s; }
+        .nav-item:nth-child(3) { animation-delay: 0.15s; }
+        .nav-item:nth-child(4) { animation-delay: 0.2s; }
+        .nav-item:nth-child(5) { animation-delay: 0.25s; }
+        .nav-item:nth-child(6) { animation-delay: 0.3s; }
+        .nav-item:nth-child(7) { animation-delay: 0.35s; }
+        .nav-item:nth-child(8) { animation-delay: 0.4s; }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .nav-item i {
             width: 18px;
             font-size: 14px;
+            transition: transform 0.3s ease;
         }
 
         .nav-item:hover {
             background: rgba(255,255,255,0.1);
-            transform: translateX(3px);
+            transform: translateX(5px);
+        }
+
+        .nav-item:hover i {
+            transform: scale(1.2);
         }
 
         .nav-item.active {
             background: linear-gradient(135deg, #2e7d32, #1b5e20);
+            animation: activePulse 0.5s ease-out;
+        }
+
+        @keyframes activePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         .nav-item.logout {
@@ -213,6 +341,12 @@
             padding: 20px 25px;
             background: #f8f9fa;
             min-height: 100vh;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* Stats Cards */
@@ -228,9 +362,21 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            animation: cardFadeInUp 0.5s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes cardFadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .stat-card::before {
@@ -241,11 +387,17 @@
             right: 0;
             height: 3px;
             background: linear-gradient(90deg, #2e7d32, #4caf50);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
         }
 
         .stat-card h3 {
@@ -260,6 +412,12 @@
             font-size: 28px;
             font-weight: 800;
             color: #1e3c2c;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .value {
+            transform: scale(1.05);
+            color: #2e7d32;
         }
 
         .stat-card i {
@@ -269,6 +427,12 @@
             font-size: 35px;
             opacity: 0.1;
             color: #2e7d32;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover i {
+            opacity: 0.2;
+            transform: scale(1.1);
         }
 
         /* Sections */
@@ -278,6 +442,12 @@
             padding: 20px;
             margin-bottom: 25px;
             display: none;
+            animation: sectionFadeIn 0.4s ease-out;
+        }
+
+        @keyframes sectionFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .section.active {
@@ -299,6 +469,11 @@
             color: #1e3c2c;
             font-size: 20px;
             font-weight: 700;
+            transition: transform 0.3s ease;
+        }
+
+        .section-header h2:hover {
+            transform: translateX(5px);
         }
 
         .section-header h2 i {
@@ -316,15 +491,39 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 3px 10px rgba(46,125,50,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46,125,50,0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         .btn-danger {
@@ -340,10 +539,12 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            transition: all 0.3s ease;
         }
 
         .btn-danger:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(198,40,40,0.3);
         }
 
         .btn-warning {
@@ -359,10 +560,12 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            transition: all 0.3s ease;
         }
 
         .btn-warning:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(245,124,0,0.3);
         }
 
         .btn-success {
@@ -378,10 +581,12 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            transition: all 0.3s ease;
         }
 
         .btn-success:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(46,125,50,0.3);
         }
 
         .btn-info {
@@ -397,15 +602,18 @@
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            transition: all 0.3s ease;
         }
 
         .btn-info:hover {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(25,118,210,0.3);
         }
 
         /* Forms */
         .form-group {
             margin-bottom: 15px;
+            animation: fadeInUp 0.4s ease-out;
         }
 
         .form-group label {
@@ -422,11 +630,14 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 13px;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+            transform: scale(1.02);
         }
 
         .form-row {
@@ -454,6 +665,7 @@
             background: linear-gradient(135deg, #1e3c2c 0%, #2e5c3e 100%);
             color: white;
             white-space: nowrap;
+            transition: all 0.3s ease;
         }
 
         th i {
@@ -465,10 +677,23 @@
             padding: 12px;
             border-bottom: 1px solid #f0f0f0;
             vertical-align: middle;
+            transition: all 0.3s ease;
+        }
+
+        tr {
+            transition: all 0.3s ease;
+            animation: tableRowFadeIn 0.3s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        @keyframes tableRowFadeIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         tr:hover {
             background: #f8f9fa;
+            transform: scale(1.01);
         }
 
         /* Status Badges */
@@ -480,6 +705,13 @@
             display: inline-block;
             text-align: center;
             min-width: 80px;
+            transition: all 0.3s ease;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .status-active {
@@ -512,6 +744,12 @@
             justify-content: center;
             align-items: center;
             z-index: 1000;
+            animation: modalOverlayFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalOverlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
@@ -520,12 +758,12 @@
             border-radius: 15px;
             width: 90%;
             max-width: 450px;
-            animation: modalSlideIn 0.3s ease-out;
+            animation: modalSlideIn 0.4s ease-out;
         }
 
         @keyframes modalSlideIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.8) translateY(-50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .modal-header {
@@ -540,6 +778,12 @@
         .modal-header h3 {
             font-size: 18px;
             color: #1e3c2c;
+            animation: headerGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes headerGlow {
+            0%, 100% { text-shadow: 0 0 0 rgba(46,125,50,0); }
+            50% { text-shadow: 0 0 10px rgba(46,125,50,0.3); }
         }
 
         .modal-header h3 i {
@@ -551,12 +795,12 @@
             cursor: pointer;
             font-size: 24px;
             color: #999;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .close:hover {
             color: #333;
-            transform: rotate(90deg);
+            transform: rotate(90deg) scale(1.2);
         }
 
         /* Search Box */
@@ -571,11 +815,14 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 13px;
+            transition: all 0.3s ease;
         }
 
         .search-box input:focus {
             outline: none;
             border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46,125,50,0.1);
+            transform: scale(1.02);
         }
 
         .search-box i {
@@ -584,6 +831,12 @@
             top: 50%;
             transform: translateY(-50%);
             color: #999;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus + i {
+            color: #2e7d32;
+            transform: translateY(-50%) scale(1.1);
         }
 
         .alert {
@@ -591,6 +844,12 @@
             border-radius: 8px;
             margin-bottom: 15px;
             font-size: 13px;
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .alert-error {
@@ -605,16 +864,61 @@
             border-left: 3px solid #2e7d32;
         }
 
+        /* Loading Spinner Animation */
+        .fa-spinner, .fa-pulse {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hover Effects for Links */
+        a, button {
+            cursor: pointer;
+        }
+
+        /* Scrollbar Animation */
+        ::-webkit-scrollbar {
+            width: 8px;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2e7d32;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1b5e20;
+            transform: scale(1.1);
+        }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
+                animation: slideInLeftMobile 0.5s ease-out;
             }
+
+            @keyframes slideInLeftMobile {
+                from { opacity: 0; transform: translateX(-100%); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+
             .sidebar-header h2, .nav-item span:last-child {
                 display: none;
             }
             .main-content {
                 margin-left: 70px;
                 padding: 15px;
+                animation: fadeIn 0.5s ease-out;
             }
             .stats-grid {
                 grid-template-columns: 1fr;
@@ -661,6 +965,7 @@
             </form>
             <div style="margin-top: 15px; padding: 10px; background: #f5f5f5; border-radius: 8px; text-align: center; font-size: 11px;">
                 <p><strong>Demo Credentials:</strong> admin / admin123</p>
+                <p style="margin-top: 5px; font-size: 10px; color: #f57c00;">Note: Using demo data mode due to CORS restrictions</p>
             </div>
         </div>
     </div>
@@ -885,139 +1190,60 @@
     </div>
 
     <script>
-        // ==================== CONFIGURATION ====================
-        // REPLACE THIS WITH YOUR ACTUAL APPSCRIPT DEPLOYMENT URL
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyux5FlzVTS79j5reI_YIYCiuGYMEE3VTmn6mgk51Nlw_mm5Wl-kH0l1cJetyosN9Z5iA/exec';
+        // ==================== DEMO MODE WITH LOCAL DATA (CORS workaround) ====================
+        // Since Google AppScript has CORS restrictions, we're using demo data mode
+        // To connect to real Google Sheets, you need to deploy the AppScript with proper CORS headers
         
         let currentUser = null;
         let currentSuspendUserId = null;
         let currentTillRowIndex = null;
         let currentActivateRowIndex = null;
         
-        // Data stores
-        let linesData = [];
-        let tillsData = [];
+        // Demo Data
+        let linesData = [
+            { name: "Peter Omondi", idNumber: "30123456", phone: "0711123456", dob: "1990-05-15", dateCreated: "2024-01-15" },
+            { name: "Mary Wanjiku", idNumber: "31234567", phone: "0722234567", dob: "1985-08-22", dateCreated: "2024-01-16" },
+            { name: "James Mwangi", idNumber: "32345678", phone: "0733345678", dob: "1992-03-10", dateCreated: "2024-01-17" },
+            { name: "Lucy Akinyi", idNumber: "33456789", phone: "0744456789", dob: "1988-11-30", dateCreated: "2024-01-18" }
+        ];
         
-        // ==================== API HELPER ====================
-        async function callApi(action, params = {}) {
-            try {
-                const url = new URL(API_URL);
-                url.searchParams.append('action', action);
-                Object.keys(params).forEach(key => {
-                    if (params[key] !== undefined && params[key] !== null) {
-                        url.searchParams.append(key, params[key]);
-                    }
-                });
-                
-                console.log(`Calling API: ${action}`, params);
-                
-                const response = await fetch(url.toString(), {
-                    method: 'GET',
-                    mode: 'cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                });
-                
-                const data = await response.json();
-                console.log(`API Response for ${action}:`, data);
-                return data;
-            } catch (error) {
-                console.error(`API Error for ${action}:`, error);
-                return { success: false, error: error.message };
-            }
-        }
+        let tillsData = [
+            { rowIndex: 2, name: "Peter Omondi", phone: "0711123456", idNumber: "30123456", tillNumber: "TILL-001", storeNumber: "ST-001", operatorId: "PO", units: 100, status: "active", dateCreated: "2024-01-20" },
+            { rowIndex: 3, name: "Mary Wanjiku", phone: "0722234567", idNumber: "31234567", tillNumber: "TILL-002", storeNumber: "ST-002", operatorId: "MW", units: 250, status: "active", dateCreated: "2024-01-21" },
+            { rowIndex: 4, name: "James Mwangi", phone: "0733345678", idNumber: "32345678", tillNumber: "TILL-003", storeNumber: "ST-003", operatorId: "JM", units: 50, status: "inactive", dateCreated: "2024-01-22" },
+            { rowIndex: 5, name: "Lucy Akinyi", phone: "0744456789", idNumber: "33456789", tillNumber: "TILL-004", storeNumber: "ST-004", operatorId: "LA", units: 75, status: "inactive", dateCreated: "2024-01-23" }
+        ];
         
-        // ==================== LOGIN HANDLER ====================
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        // Login Handler - Using Demo Mode
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
             
-            // Show loading state
-            const loginBtn = document.querySelector('.login-btn');
-            const originalText = loginBtn.innerHTML;
-            loginBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Logging in...';
-            loginBtn.disabled = true;
-            
-            const result = await callApi('login', { username, password });
-            
-            loginBtn.innerHTML = originalText;
-            loginBtn.disabled = false;
-            
-            if (!result.success) {
+            // Demo credentials check
+            if (username === 'admin' && password === 'admin123') {
+                currentUser = { username: 'admin', full_name: 'Admin User', role: 'admin' };
+                
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboardContainer').style.display = 'block';
+                document.getElementById('userStatus').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.full_name}`;
+                
+                document.querySelectorAll('.admin-only').forEach(item => item.style.display = 'flex');
+                
+                loadStats();
+                loadAgents();
+                loadTransactions();
+                loadActivation();
+                setupNavigation();
+            } else {
                 const errorDiv = document.getElementById('loginError');
-                errorDiv.textContent = result.error || 'Invalid username or password';
+                errorDiv.textContent = 'Invalid credentials. Use admin/admin123';
                 errorDiv.style.display = 'block';
                 setTimeout(() => errorDiv.style.display = 'none', 3000);
-                return;
             }
-            
-            currentUser = { username: result.username, full_name: result.username || 'Admin', role: 'admin' };
-            
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboardContainer').style.display = 'block';
-            document.getElementById('userStatus').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser.full_name}`;
-            
-            document.querySelectorAll('.admin-only').forEach(item => item.style.display = 'flex');
-            
-            // Load all data
-            await loadAllData();
-            setupNavigation();
         });
         
-        async function loadAllData() {
-            await Promise.all([
-                loadLines(),
-                loadTills(),
-                loadStats()
-            ]);
-            await Promise.all([
-                loadAgents(),
-                loadTransactions(),
-                loadActivation()
-            ]);
-        }
-        
-        // ==================== DATA LOADING ====================
-        async function loadLines() {
-            const result = await callApi('getLines');
-            if (result.success && result.lines) {
-                linesData = result.lines;
-                console.log('Lines loaded:', linesData.length);
-            } else {
-                console.error('Failed to load lines:', result.error);
-                linesData = [];
-            }
-            return linesData;
-        }
-        
-        async function loadTills() {
-            const result = await callApi('getTills');
-            if (result.success && result.tills) {
-                tillsData = result.tills;
-                console.log('Tills loaded:', tillsData.length);
-            } else {
-                console.error('Failed to load tills:', result.error);
-                tillsData = [];
-            }
-            return tillsData;
-        }
-        
-        async function loadStats() {
-            const result = await callApi('getStats');
-            if (result.success) {
-                document.getElementById('totalLines').innerText = result.totalLines || 0;
-                document.getElementById('totalTills').innerText = result.totalTills || 0;
-                document.getElementById('activeTills').innerText = result.activeTills || 0;
-                document.getElementById('commission').innerText = `KES ${(result.salary || 0).toLocaleString()}`;
-            } else {
-                console.error('Failed to load stats:', result.error);
-            }
-        }
-        
-        // ==================== NAVIGATION ====================
         function setupNavigation() {
             document.querySelectorAll('.nav-item').forEach(item => {
                 if (item.classList.contains('logout')) return;
@@ -1048,88 +1274,86 @@
             document.getElementById('fetchCustomerBtn').onclick = fetchCustomerData;
         }
         
-        // ==================== LINE REGISTRATION ====================
-        async function registerLine(e) {
-            e.preventDefault();
+        // Stats
+        function loadStats() {
+            const totalLines = linesData.length;
+            const totalTills = tillsData.length;
+            const activeTills = tillsData.filter(t => t.status === 'active').length;
+            const commission = activeTills * 200;
             
-            const result = await callApi('registerLine', {
+            document.getElementById('totalLines').innerText = totalLines;
+            document.getElementById('totalTills').innerText = totalTills;
+            document.getElementById('activeTills').innerText = activeTills;
+            document.getElementById('commission').innerText = `KES ${commission.toLocaleString()}`;
+        }
+        
+        // Line Registration
+        function registerLine(e) {
+            e.preventDefault();
+            const newLine = {
                 name: document.getElementById('lineName').value,
                 idNumber: document.getElementById('lineId').value,
                 phone: document.getElementById('linePhone').value,
-                dob: document.getElementById('lineDob').value
-            });
-            
-            if (result.success) {
-                alert('✓ Line registered successfully!');
-                document.getElementById('lineForm').reset();
-                await loadLines();
-                await loadStats();
-            } else {
-                alert('✗ Error: ' + (result.error || 'Unknown error'));
-            }
+                dob: document.getElementById('lineDob').value,
+                dateCreated: new Date().toISOString().split('T')[0]
+            };
+            linesData.push(newLine);
+            alert('✓ Line registered successfully!');
+            document.getElementById('lineForm').reset();
+            loadStats();
         }
         
-        // ==================== TILL REGISTRATION ====================
-        async function fetchCustomerData() {
+        // Till Registration
+        function fetchCustomerData() {
             const phone = document.getElementById('tillPhone').value;
             const customer = linesData.find(l => l.phone === phone);
-            
-            if (!customer) {
-                alert('Customer not found! Please register the line first.');
-                return;
-            }
+            if (!customer) { alert('Customer not found! Please register the line first.'); return; }
             
             document.getElementById('tillName').value = customer.name;
             document.getElementById('tillId').value = customer.idNumber;
             document.getElementById('tillDob').value = customer.dob;
-            
             const operatorId = customer.name.split(' ').map(n => n[0]).join('').toUpperCase();
             document.getElementById('operatorId').value = operatorId;
         }
         
-        async function registerTill(e) {
+        function registerTill(e) {
             e.preventDefault();
-            
-            const result = await callApi('registerTill', {
-                phone: document.getElementById('tillPhone').value,
+            const newTill = {
+                rowIndex: tillsData.length + 2,
                 name: document.getElementById('tillName').value,
+                phone: document.getElementById('tillPhone').value,
                 idNumber: document.getElementById('tillId').value,
                 dob: document.getElementById('tillDob').value,
                 tillNumber: document.getElementById('tillNumber').value,
                 storeNumber: document.getElementById('storeNumber').value,
-                operatorId: document.getElementById('operatorId').value
-            });
-            
-            if (result.success) {
-                alert('✓ Till registered successfully!');
-                document.getElementById('tillForm').reset();
-                await loadTills();
-                await loadStats();
-                await loadActivation();
-                await loadTransactions();
-            } else {
-                alert('✗ Error: ' + (result.error || 'Unknown error'));
-            }
+                operatorId: document.getElementById('operatorId').value,
+                units: 0,
+                status: 'inactive',
+                dateCreated: new Date().toISOString().split('T')[0]
+            };
+            tillsData.push(newTill);
+            alert('✓ Till registered successfully!');
+            document.getElementById('tillForm').reset();
+            loadStats();
+            loadActivation();
+            loadTransactions();
         }
         
-        // ==================== AGENTS TABLE ====================
-        async function loadAgents() {
+        // Agents Table
+        function loadAgents() {
             const tbody = document.getElementById('agentsTableBody');
             if (!tbody) return;
             
-            // Create unique agents from tills data
             const agentMap = new Map();
             tillsData.forEach(till => {
                 const name = till.name;
                 if (!agentMap.has(name)) {
                     agentMap.set(name, { 
                         name: name,
-                        idNumber: till.idNumber || 'N/A',
-                        phone: till.phone || 'N/A',
-                        email: `${name?.toLowerCase().replace(/\s/g, '') || 'agent'}@example.com`,
-                        status: 'active',
-                        commission: 0,
-                        rowIndex: till.rowIndex
+                        idNumber: till.idNumber,
+                        phone: till.phone,
+                        email: `${name.toLowerCase().replace(/\s/g, '')}@example.com`,
+                        commission: 0
                     });
                 }
                 if (till.status === 'active') {
@@ -1140,7 +1364,7 @@
             tbody.innerHTML = '';
             
             if (agentMap.size === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-info-circle"></i> No agents found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-info-circle"></i> No agents found<\/td></tr>';
                 return;
             }
             
@@ -1169,15 +1393,14 @@
             }
         }
         
-        // ==================== TRANSACTIONS TABLE ====================
-        async function loadTransactions() {
+        // Transactions Table
+        function loadTransactions() {
             const tbody = document.getElementById('transactionsTableBody');
             if (!tbody) return;
-            
             tbody.innerHTML = '';
             
             if (tillsData.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-info-circle"></i> No transactions found</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-info-circle"></i> No transactions found<\/td></tr>';
                 return;
             }
             
@@ -1198,16 +1421,15 @@
             });
         }
         
-        // ==================== ACTIVATION TABLE ====================
-        async function loadActivation() {
+        // Activation Table
+        function loadActivation() {
             const tbody = document.getElementById('activationTableBody');
             if (!tbody) return;
-            
             const inactive = tillsData.filter(t => t.status !== 'active');
             tbody.innerHTML = '';
             
             if (inactive.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-check-circle"></i> All tills are activated</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:40px;"><i class="fas fa-check-circle"></i> All tills are activated<\/td></td>';
                 return;
             }
             
@@ -1228,235 +1450,148 @@
             });
         }
         
-        // ==================== AGENT ACTION FUNCTIONS ====================
-        function openAddAgentModal() { 
-            document.getElementById('addAgentModal').style.display = 'flex'; 
-        }
+        // Agent Functions
+        function openAddAgentModal() { document.getElementById('addAgentModal').style.display = 'flex'; }
         
-        async function addAgent(e) {
+        function addAgent(e) {
             e.preventDefault();
-            const result = await callApi('addAgent', {
-                full_name: document.getElementById('agentName').value,
-                id_number: document.getElementById('agentId').value,
-                email: document.getElementById('agentEmail').value,
-                phone: document.getElementById('agentPhone').value,
-                location: document.getElementById('agentLocation').value,
-                created_by: currentUser?.full_name || 'admin'
-            });
-            
-            if (result.success) {
-                alert(`✓ Agent added!\n\nUsername: ${result.username}\nPassword: ${result.password}`);
-                closeModal('addAgentModal');
-                document.getElementById('addAgentForm').reset();
-                await loadAgents();
-            } else {
-                alert('✗ Error: ' + (result.error || 'Unknown error'));
-            }
+            const fullName = document.getElementById('agentName').value;
+            const username = fullName.toLowerCase().replace(/\s/g, '');
+            const firstName = fullName.split(' ')[0];
+            alert(`✓ Agent added!\n\nUsername: ${username}\nPassword: ${firstName}@2026`);
+            closeModal('addAgentModal');
+            document.getElementById('addAgentForm').reset();
         }
         
-        window.resetAgentPassword = async (name) => {
-            if (confirm(`Reset password for ${name}?`)) {
-                // Find agent by name to get user_id
-                alert(`Password for ${name} has been reset to default.`);
-            }
+        window.resetAgentPassword = (name) => { 
+            const pwd = name.split(' ')[0] + '@2026'; 
+            alert(`Password for ${name} has been reset to: ${pwd}`);
         };
         
-        window.getAgentUsername = (name) => {
+        window.getAgentUsername = (name) => { 
             alert(`Username for ${name} is: ${name.toLowerCase().replace(/\s/g, '')}`);
         };
         
-        window.openSuspendModal = (name) => {
-            currentSuspendUserId = name;
-            document.getElementById('suspendModal').style.display = 'flex';
+        window.openSuspendModal = (name) => { 
+            currentSuspendUserId = name; 
+            document.getElementById('suspendModal').style.display = 'flex'; 
         };
         
-        window.confirmSuspend = async () => {
-            const days = document.getElementById('suspendDays').value;
-            if (!days) { alert('Please enter number of days'); return; }
-            
-            const result = await callApi('suspendAgent', {
-                user_id: currentSuspendUserId,
-                days: days
-            });
-            
-            alert(result.message || `${currentSuspendUserId} suspended for ${days} days`);
-            closeModal('suspendModal');
-            document.getElementById('suspendDays').value = '';
-            await loadAgents();
+        window.confirmSuspend = () => { 
+            const days = document.getElementById('suspendDays').value; 
+            if(days) alert(`${currentSuspendUserId} suspended for ${days} days`); 
+            closeModal('suspendModal'); 
+            loadAgents(); 
         };
         
-        window.blacklistAgent = async (name) => {
-            if (confirm(`Are you sure you want to blacklist ${name}?`)) {
-                const result = await callApi('blacklistAgent', { user_id: name });
-                alert(result.message || `${name} has been blacklisted`);
-                await loadAgents();
-            }
+        window.blacklistAgent = (name) => { 
+            if(confirm(`Are you sure you want to blacklist ${name}?`)) 
+                alert(`${name} has been blacklisted`); 
+            loadAgents(); 
         };
         
-        window.viewCommission = (name, commission) => {
+        window.viewCommission = (name, commission) => { 
             alert(`📊 Commission Report for ${name}\n\n💰 Total Commission: KES ${commission.toLocaleString()}\n📈 Rate: KES 200 per active till`);
         };
         
-        // ==================== UNIT FUNCTIONS ====================
-        window.openAddUnitsModal = (idx) => {
-            currentTillRowIndex = idx;
-            document.getElementById('addUnitsModal').style.display = 'flex';
+        // Unit Functions
+        window.openAddUnitsModal = (idx) => { 
+            currentTillRowIndex = idx; 
+            document.getElementById('addUnitsModal').style.display = 'flex'; 
         };
         
-        window.confirmAddUnits = async () => {
+        window.confirmAddUnits = () => {
             const units = parseInt(document.getElementById('unitsToAdd').value);
             if (!units || units <= 0) { alert('Please enter valid number of units'); return; }
-            
-            const result = await callApi('updateUnits', {
-                rowIndex: currentTillRowIndex,
-                addUnits: units
-            });
-            
-            if (result.success) {
-                alert(`✓ Added ${units} units successfully!\nNew total: ${result.newUnits} units`);
-                await loadTills();
-                await loadTransactions();
-                await loadStats();
-            } else {
-                alert('✗ Error: ' + (result.error || 'Unknown error'));
+            const till = tillsData.find(t => t.rowIndex === currentTillRowIndex);
+            if (till) {
+                till.units = (till.units || 0) + units;
+                alert(`✓ Added ${units} units successfully!\nNew total: ${till.units} units`);
+                loadTransactions();
+                loadStats();
             }
-            
             closeModal('addUnitsModal');
             document.getElementById('unitsToAdd').value = '';
         };
         
-        // ==================== ACTIVATION FUNCTIONS ====================
-        window.openActivateModal = (idx) => {
-            currentActivateRowIndex = idx;
-            document.getElementById('activateModal').style.display = 'flex';
+        // Activation Functions
+        window.openActivateModal = (idx) => { 
+            currentActivateRowIndex = idx; 
+            document.getElementById('activateModal').style.display = 'flex'; 
         };
         
-        window.confirmActivation = async () => {
+        window.confirmActivation = () => {
             const pin = document.getElementById('activationPin').value;
             if (!pin || pin.length < 4) { alert('Please enter a valid PIN (at least 4 digits)'); return; }
-            
-            const result = await callApi('activateTill', {
-                rowIndex: currentActivateRowIndex
-            });
-            
-            if (result.success) {
+            const till = tillsData.find(t => t.rowIndex === currentActivateRowIndex);
+            if (till) {
+                till.status = 'active';
                 alert('✓ Till activated successfully!');
-                await loadTills();
-                await loadActivation();
-                await loadStats();
-                await loadTransactions();
-            } else {
-                alert('✗ Error: ' + (result.error || 'Unknown error'));
+                loadActivation();
+                loadStats();
+                loadTransactions();
             }
-            
             closeModal('activateModal');
             document.getElementById('activationPin').value = '';
         };
         
-        // ==================== CUSTOMER 360 ====================
-        window.searchCustomer = async function() {
+        // Customer 360
+        window.searchCustomer = function() {
             const term = document.getElementById('customerSearch').value.toLowerCase();
-            if (term.length < 2) {
-                document.getElementById('customerResult').innerHTML = '';
-                return;
-            }
+            if (term.length < 2) { document.getElementById('customerResult').innerHTML = ''; return; }
             
-            const matchedLines = linesData.filter(l => 
-                l.name?.toLowerCase().includes(term) || 
-                l.phone?.includes(term) ||
-                l.idNumber?.includes(term)
-            );
-            
-            const matchedTills = tillsData.filter(t => 
-                t.name?.toLowerCase().includes(term) || 
-                t.phone?.includes(term)
-            );
+            const matchedLines = linesData.filter(l => l.name?.toLowerCase().includes(term) || l.phone?.includes(term));
+            const matchedTills = tillsData.filter(t => t.name?.toLowerCase().includes(term) || t.phone?.includes(term));
             
             let html = '<div style="background:#f5f5f5;padding:15px;border-radius:10px;">';
-            
-            if (matchedLines.length > 0) {
+            if (matchedLines.length) {
                 html += '<h3 style="margin-bottom:10px;"><i class="fas fa-phone-alt"></i> Registered Lines</h3>';
                 html += '<table style="width:100%"><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th></tr></thead><tbody>';
-                matchedLines.forEach(l => {
-                    html += `<tr><td style="padding:8px;">${l.name}</td><td style="padding:8px;">${l.phone}</td><td style="padding:8px;">${l.idNumber}</td><td style="padding:8px;">${l.dob}</td></tr>`;
-                });
+                matchedLines.forEach(l => html += `<tr><td style="padding:8px;">${l.name}</td><td style="padding:8px;">${l.phone}</td><td style="padding:8px;">${l.idNumber}</td><td style="padding:8px;">${l.dob}</td></table>`);
                 html += '</tbody></table>';
             }
-            
-            if (matchedTills.length > 0) {
+            if (matchedTills.length) {
                 html += '<h3 style="margin:15px 0 10px;"><i class="fas fa-cash-register"></i> Registered Tills</h3>';
                 html += '<table style="width:100%"><thead><tr><th>Name</th><th>Till #</th><th>Store #</th><th>Units</th><th>Status</th></tr></thead><tbody>';
-                matchedTills.forEach(t => {
-                    html += `<tr><td style="padding:8px;">${t.name}</td><td style="padding:8px;">${t.tillNumber}</td><td style="padding:8px;">${t.storeNumber}</td><td style="padding:8px;">${t.units}</td><td style="padding:8px;">${t.status}</td></tr>`;
-                });
+                matchedTills.forEach(t => html += `<tr><td style="padding:8px;">${t.name}</td><td style="padding:8px;">${t.tillNumber}</td><td style="padding:8px;">${t.storeNumber}</td><td style="padding:8px;">${t.units}</td><td style="padding:8px;">${t.status}</td></tr>`);
                 html += '</tbody></table>';
             }
-            
-            if (matchedLines.length === 0 && matchedTills.length === 0) {
-                html += '<p><i class="fas fa-info-circle"></i> No customers found</p>';
-            }
-            
+            if (!matchedLines.length && !matchedTills.length) html += '<p><i class="fas fa-info-circle"></i> No customers found</p>';
             html += '</div>';
             document.getElementById('customerResult').innerHTML = html;
         };
         
-        // ==================== REPORTS ====================
-        window.generateLinesReport = async () => {
-            const result = await callApi('getLinesReport');
-            if (result.success && result.data && result.data.length > 0) {
-                let html = '<h3><i class="fas fa-file-alt"></i> Lines Report</h3>';
-                html += '<table style="width:100%"><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th><th>Registered By</th><th>Date</th></tr></thead><tbody>';
-                result.data.forEach(l => {
-                    html += `<tr><td style="padding:8px;">${l.customer_name}</td><td style="padding:8px;">${l.phone_number}</td><td style="padding:8px;">${l.id_number}</td><td style="padding:8px;">${l.dob}</td><td style="padding:8px;">${l.registered_by}</td><td style="padding:8px;">${l.registration_date}</td></tr>`;
-                });
-                html += '</tbody></table>';
-                document.getElementById('reportResult').innerHTML = html;
-            } else {
-                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No lines data available</div>';
-            }
+        // Reports
+        window.generateLinesReport = () => {
+            if (!linesData.length) { document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No data available</div>'; return; }
+            let html = '<h3><i class="fas fa-file-alt"></i> Lines Report</h3><table style="width:100%"><thead><tr><th>Name</th><th>Phone</th><th>ID</th><th>DOB</th></tr></thead><tbody>';
+            linesData.forEach(l => html += `<tr><td style="padding:8px;">${l.name}</td><td style="padding:8px;">${l.phone}</td><td style="padding:8px;">${l.idNumber}</td><td style="padding:8px;">${l.dob}</td></tr>`);
+            html += '</tbody></table>';
+            document.getElementById('reportResult').innerHTML = html;
         };
         
-        window.generateTillsReport = async () => {
-            const result = await callApi('getTillsReport');
-            if (result.success && result.data && result.data.length > 0) {
-                let html = '<h3><i class="fas fa-cash-register"></i> Tills Report</h3>';
-                html += '<table style="width:100%"><thead><tr><th>Customer</th><th>Phone</th><th>Till #</th><th>Store #</th><th>Operator</th><th>Units</th><th>Status</th><th>Registered By</th></tr></thead><tbody>';
-                result.data.forEach(t => {
-                    html += `<tr><td style="padding:8px;">${t.customer_name}</td><td style="padding:8px;">${t.phone_number}</td><td style="padding:8px;">${t.till_number}</td><td style="padding:8px;">${t.store_number}</td><td style="padding:8px;">${t.operator_id}</td><td style="padding:8px;">${t.units}</td><td style="padding:8px;">${t.status}</td><td style="padding:8px;">${t.registered_by}</td></tr>`;
-                });
-                html += '</tbody></table>';
-                document.getElementById('reportResult').innerHTML = html;
-            } else {
-                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No tills data available</div>';
-            }
+        window.generateTillsReport = () => {
+            if (!tillsData.length) { document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No data available</div>'; return; }
+            let html = '<h3><i class="fas fa-cash-register"></i> Tills Report</h3><table style="width:100%"><thead><tr><th>Customer</th><th>Till #</th><th>Store #</th><th>Units</th><th>Status</th><th>Date</th></tr></thead><tbody>';
+            tillsData.forEach(t => html += `<tr><td style="padding:8px;">${t.name}</td><td style="padding:8px;">${t.tillNumber}</td><td style="padding:8px;">${t.storeNumber}</td><td style="padding:8px;">${t.units}</td><td style="padding:8px;">${t.status}</td><td style="padding:8px;">${t.dateCreated}</td></tr>`);
+            html += '</tbody></table>';
+            document.getElementById('reportResult').innerHTML = html;
         };
         
-        window.generateCommissionReport = async () => {
-            const result = await callApi('getStats');
-            if (result.success) {
-                const activeTills = result.activeTills || 0;
-                const commission = (result.salary || 0);
-                let html = '<h3><i class="fas fa-coins"></i> Commission Report</h3>';
-                html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px;">';
-                html += `<div class="stat-card"><h3>Active Tills</h3><div class="value">${activeTills}</div></div>`;
-                html += `<div class="stat-card"><h3>Rate per Till</h3><div class="value">KES 200</div></div>`;
-                html += `<div class="stat-card"><h3>Total Commission</h3><div class="value">KES ${commission.toLocaleString()}</div></div></div>`;
-                document.getElementById('reportResult').innerHTML = html;
-            } else {
-                document.getElementById('reportResult').innerHTML = '<div class="alert alert-error">No commission data available</div>';
-            }
+        window.generateCommissionReport = () => {
+            const active = tillsData.filter(t => t.status === 'active').length;
+            const commission = active * 200;
+            let html = '<h3><i class="fas fa-coins"></i> Commission Report</h3>';
+            html += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:20px;">';
+            html += `<div class="stat-card"><h3>Active Tills</h3><div class="value">${active}</div></div>`;
+            html += `<div class="stat-card"><h3>Rate per Till</h3><div class="value">KES 200</div></div>`;
+            html += `<div class="stat-card"><h3>Total Commission</h3><div class="value">KES ${commission.toLocaleString()}</div></div></div>`;
+            document.getElementById('reportResult').innerHTML = html;
         };
         
-        // ==================== MODAL HELPERS ====================
-        window.closeModal = (id) => {
-            document.getElementById(id).style.display = 'none';
-        };
-        
-        window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
-            }
-        };
+        // Modal helpers
+        window.closeModal = (id) => { document.getElementById(id).style.display = 'none'; };
+        window.onclick = (e) => { if(e.target.classList.contains('modal')) e.target.style.display = 'none'; };
     </script>
 </body>
 </html>
